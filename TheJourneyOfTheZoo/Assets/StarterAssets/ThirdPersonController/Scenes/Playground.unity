@@ -2348,6 +2348,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2110864322}
+    - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2110864327}
   m_SourcePrefab: {fileID: 100100000, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
 --- !u!114 &1762682259 stripped
 MonoBehaviour:
@@ -2582,6 +2585,20 @@ MonoBehaviour:
   debugTransform: {fileID: 169023340}
   pfBulletProjectile: {fileID: 724372993470089080, guid: 3990850d91a81044fb00c30cc06dc8ba, type: 3}
   spawnBulletPosition: {fileID: 1428765798}
+--- !u!114 &2110864327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110864316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88fcc1270925e384eac681743398af7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vfxHitCrit: {fileID: 5463073117633726648, guid: cbcae0793cfd963459caac188b595fdd, type: 3}
+  vfxHitNormal: {fileID: 5463073117633726648, guid: 0056fb17d352b6d4badc77c66667fa8b, type: 3}
 --- !u!1 &2114283753834967212
 GameObject:
   m_ObjectHideFlags: 0

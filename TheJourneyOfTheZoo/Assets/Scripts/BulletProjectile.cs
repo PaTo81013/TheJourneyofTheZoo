@@ -1,10 +1,12 @@
 using System;
+using System.ComponentModel.Design.Serialization;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BulletProjectile : MonoBehaviour
 {
-    [SerializeField] private Transform vfxHitGreen;
-    [SerializeField] private Transform vfxHitRed;
+    [SerializeField] private Transform vfxHitCrit;
+    [SerializeField] private Transform vfxHitNormal;
     
     private Rigidbody bulletRigidbody;
 
@@ -15,7 +17,7 @@ public class BulletProjectile : MonoBehaviour
 
     private void Start()
     {
-        float speed = 10f;
+        float speed = 40f;
         bulletRigidbody.linearVelocity = transform.forward * speed;
     }
 
@@ -24,11 +26,13 @@ public class BulletProjectile : MonoBehaviour
         if (other.GetComponent<BulletTarget>() != null)
         {
             //Hit target
-            Instantiate(vfxHitGreen, transform.position, Quaternion.identity);
+            //Instantiate(vfxHitCrit, transform.position, Quaternion.identity);
+            PlayerPoolManager.Instance.TriggerCriticalBulletExplosion(transform.position);
         } else
         {
             //Hit something else
-            Instantiate(vfxHitRed, transform.position, Quaternion.identity);
+            //Instantiate(vfxHitNormal, transform.position, Quaternion.identity);
+            PlayerPoolManager.Instance.TriggerNormalBulletExplosion(transform.position);
         }
         Destroy(gameObject);
     }
