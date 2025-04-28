@@ -7,8 +7,10 @@ public class PlayerPoolManager : MonoBehaviour
     
     [SerializeField] private GameObject vfxHitCrit;
     [SerializeField] private GameObject vfxHitNormal;
+    [SerializeField] private GameObject bulletPrefab;
     private List<GameObject> VFXHitCritList = new List<GameObject>();
     private List<GameObject> VFXHitNormalList = new List<GameObject>();
+    private List<GameObject> BulletList = new List<GameObject>();
     
     private void Awake()
     {
@@ -20,6 +22,27 @@ public class PlayerPoolManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    public void InstantiateBulletForShoot(Vector3 positionToBeSpawned, Vector3 aimingDirection, Vector3 targetPosition, bool criticalHit)
+    {
+        //Verificamos si no existe un game object disponible en la jerarquia
+        for (int i = 0; i < BulletList.Count; i++)
+        {
+            if (!BulletList[i].activeInHierarchy)
+            {
+                BulletList[i].transform.rotation = Quaternion.LookRotation(aimingDirection, Vector3.up); 
+                BulletList[i].transform.position = positionToBeSpawned;
+                BulletList[i].GetComponent<BulletProjectile>().Setup(targetPosition, criticalHit);
+                BulletList[i].SetActive(true);
+                return;
+            }
+        }
+        
+        //Si no hay game objects disponibles, entonces instanciamos uno y lo agregamos al pool
+        GameObject newBullet = Instantiate(bulletPrefab, positionToBeSpawned, Quaternion.LookRotation(aimingDirection, Vector3.up));
+        newBullet.GetComponent<BulletProjectile>().Setup(targetPosition, criticalHit);
+        BulletList.Add(Instantiate(bulletPrefab, positionToBeSpawned, Quaternion.LookRotation(aimingDirection, Vector3.up)));
     }
 
     public void TriggerNormalBulletExplosion(Vector3 positionToBeSpawned)
