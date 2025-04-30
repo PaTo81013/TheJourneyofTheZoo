@@ -7,12 +7,46 @@ public class BulletProjectile : MonoBehaviour
 {
     [SerializeField] private Transform vfxHitCrit;
     [SerializeField] private Transform vfxHitNormal;
+    private Vector3 targetPosition;
+    private bool hasImpacted;
+    private bool criticalHit;
+
+    public void Setup(Vector3 targetPosition, bool criticalHit)
+    {
+        this.criticalHit = criticalHit;
+        this.targetPosition = targetPosition;
+        hasImpacted = false;
+    }
     
+    private void Update()
+    {
+        float distanceBefore = Vector3.Distance(transform.position, targetPosition);
+        
+        Vector3 moveDirection = (targetPosition - transform.position).normalized;
+        float moveSpeed = 200f;
+        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        
+        float distanceAfter = Vector3.Distance(transform.position, targetPosition);
+
+        if (distanceBefore < distanceAfter)
+        {
+            hasImpacted = true;
+            TriggerVFXEffect();
+            //Instantiate VFX From pool manager
+            /*
+            transform.Find("Trail").SetParent(null);
+            Destroy(gameObject);
+            */
+            this.gameObject.SetActive(false);
+        }
+    }
+
+    /*
     private Rigidbody bulletRigidbody;
 
     private void Awake()
     {
-        bulletRigidbody = GetComponent<Rigidbody>(); 
+        bulletRigidbody = GetComponent<Rigidbody>();
     }
 
     private void Start()
@@ -20,20 +54,42 @@ public class BulletProjectile : MonoBehaviour
         float speed = 40f;
         bulletRigidbody.linearVelocity = transform.forward * speed;
     }
+    */
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<BulletTarget>() != null)
+        if (!hasImpacted)
         {
-            //Hit target
-            //Instantiate(vfxHitCrit, transform.position, Quaternion.identity);
+            if (other.CompareTag("CriticalHit"))
+            {
+                //Hit target
+                //Instantiate(vfxHitCrit, transform.position, Quaternion.identity);
+                criticalHit = true;
+                TriggerVFXEffect();
+            } else if (other.CompareTag("NormalHit"))
+            {
+                //Hit something else
+                //Instantiate(vfxHitNormal, transform.position, Quaternion.identity);
+                criticalHit = false;
+                TriggerVFXEffect();
+            }
+        
+            hasImpacted = true;
+            this.gameObject.SetActive(false);
+            //Destroy(gameObject);
+        }
+    }
+
+    private void TriggerVFXEffect()
+    {
+        if (criticalHit)
+        {
             PlayerPoolManager.Instance.TriggerCriticalBulletExplosion(transform.position);
-        } else
+        }
+        else
         {
-            //Hit something else
-            //Instantiate(vfxHitNormal, transform.position, Quaternion.identity);
             PlayerPoolManager.Instance.TriggerNormalBulletExplosion(transform.position);
         }
-        Destroy(gameObject);
+        this.gameObject.SetActive(false);
     }
 }
