@@ -5,7 +5,7 @@ public class MainMenu : MonoBehaviour
     {
         Loader.Load(Loader.Scene.Playground);
     }
-
+    
     public void Quit()
     {
         Application.Quit();
