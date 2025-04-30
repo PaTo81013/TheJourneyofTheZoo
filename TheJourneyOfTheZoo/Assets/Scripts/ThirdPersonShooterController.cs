@@ -13,7 +13,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     [SerializeField] private float normalSensitivity;
     [SerializeField] private float aimSensitivity;
     [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
-    //[SerializeField] private Transform debugTransform;
+    [SerializeField] private Transform debugTransform;
     //[SerializeField] private Transform pfBulletProjectile;
     [SerializeField] private Transform spawnBulletPosition;
 
@@ -41,7 +41,7 @@ public class ThirdPersonShooterController : MonoBehaviour
         
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
         {
-            //debugTransform.position = raycastHit.point;
+            debugTransform.position = raycastHit.point;
             mouseWorldPosition = raycastHit.point;
             hitTransform = raycastHit.transform;
         }
@@ -51,7 +51,7 @@ public class ThirdPersonShooterController : MonoBehaviour
             thirdPersonController.SetSensitivity(aimSensitivity);
             thirdPersonController.SetRotateOnMove(false);
             AimCrosshairController(true);
-            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
+            //animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
 
             Vector3 worldAimTarget = mouseWorldPosition;
             worldAimTarget.y = transform.position.y;
@@ -66,7 +66,7 @@ public class ThirdPersonShooterController : MonoBehaviour
             thirdPersonController.SetSensitivity(normalSensitivity);
             thirdPersonController.SetRotateOnMove(true);
             AimCrosshairController(false);
-            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
+            //animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
         }
 
         if (starterAssetsInputs.shoot)
