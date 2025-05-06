@@ -8,6 +8,6 @@ public class LoaderCallback : MonoBehaviour
     {
         if (!_isFirstUpdate) return;
         _isFirstUpdate = false;
-        Loader.LoadTargetScene();
+        Loader.LoaderCallback();
     }
 }
