@@ -1,57 +1,41 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 public static class Loader
 {
-    private class LoadingMonoBehaviour: MonoBehaviour { }
     public enum Scene
     {
+        MainMenu,
         LoadingScene,
-        Playground,
-        MainMenu
+        Playground
     }
 
-    private static Action _onLoaderCallback;
-    private static AsyncOperation _loadingAsyncOperation;
-    
-    public static void Load(Scene scene)
+    private static Scene _targetScene;
+
+    public static void Load(Scene targetScene)
     {
-        _onLoaderCallback = () =>
-        {
-            GameObject loadingGameObject = new GameObject("Loading Game Object");
-            loadingGameObject.AddComponent<LoadingMonoBehaviour>().StartCoroutine(LoadSceneAsync(scene));
-        };
+        _targetScene = targetScene;
         
-        SceneManager.LoadSceneAsync(Scene.LoadingScene.ToString());
+        switch (targetScene)
+        {
+            case Scene.MainMenu:
+                AudioManager.Instance.PlayMusic("MainMenu");
+                break;
+            case Scene.LoadingScene:
+                AudioManager.Instance.PlayMusic("LoadingScene");
+                break;
+            case Scene.Playground:
+                AudioManager.Instance.PlayMusic("Playground");
+                break;
+        }
+        
+        SceneManager.LoadScene(Scene.LoadingScene.ToString());
     }
 
-    private static IEnumerator LoadSceneAsync(Scene scene)
+    public static void LoadTargetScene()
     {
-        yield return null;
-        _loadingAsyncOperation = SceneManager.LoadSceneAsync(scene.ToString());
-        while (!_loadingAsyncOperation.isDone)
-        {
-            yield return null;
-        }
-    }
-
-    public static float GetLoadingProgress()
-    {
-        if (_loadingAsyncOperation !=null)
-        {
-            return _loadingAsyncOperation.progress;
-        }
-        else
-        {
-            return 1f;
-        }
-    }
-    
-    public static void LoaderCallback ()
-    {
-        if (_onLoaderCallback == null) return;
-        _onLoaderCallback();
-        _onLoaderCallback = null;
+        // Carga la escena objetivo
+        SceneManager.LoadScene(_targetScene.ToString());
     }
 }
