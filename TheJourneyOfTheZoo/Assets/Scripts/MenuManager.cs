@@ -3,6 +3,7 @@ public class MenuManager : MonoBehaviour
 {
     public GameObject settingsCanvas;
     public GameObject mainMenuCanvas;
+    
     public void Play()
     {
         Loader.Load(Loader.Scene.Playground);
