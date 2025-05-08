@@ -4,6 +4,7 @@ using Cinemachine;
 using StarterAssets;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.Animations.Rigging;
 
 public class ThirdPersonShooterController : MonoBehaviour
 {
@@ -16,11 +17,17 @@ public class ThirdPersonShooterController : MonoBehaviour
     [SerializeField] private Transform debugTransform;
     //[SerializeField] private Transform pfBulletProjectile;
     [SerializeField] private Transform spawnBulletPosition;
+    
+    [SerializeField] private Rig fullBodyAimingRig;
 
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInputs;
     private Animator animator;
     private Transform hitTransform;
+    private bool forcedAiming = false;
+    private float lastShotTime = 0f;
+    private float coolDownTime = 0.3f;
+    
 
     private void Awake()
     {
@@ -45,13 +52,14 @@ public class ThirdPersonShooterController : MonoBehaviour
             mouseWorldPosition = raycastHit.point;
             hitTransform = raycastHit.transform;
         }
-        if (starterAssetsInputs.aim)
+        if (starterAssetsInputs.aim || forcedAiming)
         {
             aimVirtualCamera.gameObject.SetActive(true);
             thirdPersonController.SetSensitivity(aimSensitivity);
             thirdPersonController.SetRotateOnMove(false);
             AimCrosshairController(true);
-            //animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
+            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
+            ToggleAimingRig(true);
 
             Vector3 worldAimTarget = mouseWorldPosition;
             worldAimTarget.y = transform.position.y;
@@ -66,12 +74,14 @@ public class ThirdPersonShooterController : MonoBehaviour
             thirdPersonController.SetSensitivity(normalSensitivity);
             thirdPersonController.SetRotateOnMove(true);
             AimCrosshairController(false);
-            //animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
+            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
+            ToggleAimingRig(false);
         }
 
         if (starterAssetsInputs.shoot)
         {
-            if (hitTransform != null)
+            forcedAiming = true;
+            if (hitTransform != null && Time.time >= lastShotTime + coolDownTime)
             {
                 Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
                 if (hitTransform.gameObject.CompareTag("CriticalHit"))
@@ -81,12 +91,17 @@ public class ThirdPersonShooterController : MonoBehaviour
                 {
                     PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition, false);
                 }
+                lastShotTime = Time.time;
             }
             
             //if (hitTransform.gameObject.CompareTag("NormalHit"))
             //PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition);
             //Instantiate(pfBulletProjectile, spawnBulletPosition.position, Quaternion.LookRotation(aimDir, Vector3.up));
-            starterAssetsInputs.shoot = false;
+            //starterAssetsInputs.shoot = false;
+        }
+        else
+        {
+            forcedAiming = false;
         }
         
     }
@@ -103,5 +118,10 @@ public class ThirdPersonShooterController : MonoBehaviour
             aimCrosshair.SetActive(false);
             //normalCrosshair.SetActive(true);
         }
+    }
+
+    private void ToggleAimingRig(bool rigOption)
+    {
+        fullBodyAimingRig.weight = rigOption ? 1 : 0;
     }
 }
