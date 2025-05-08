@@ -52,7 +52,7 @@ public class ThirdPersonShooterController : MonoBehaviour
             mouseWorldPosition = raycastHit.point;
             hitTransform = raycastHit.transform;
         }
-        if (starterAssetsInputs.aim || forcedAiming)
+        if ((starterAssetsInputs.aim || forcedAiming) && !Pause.IsPaused)
         {
             aimVirtualCamera.gameObject.SetActive(true);
             thirdPersonController.SetSensitivity(aimSensitivity);
@@ -78,7 +78,7 @@ public class ThirdPersonShooterController : MonoBehaviour
             ToggleAimingRig(false);
         }
 
-        if (starterAssetsInputs.shoot)
+        if (starterAssetsInputs.shoot && !Pause.IsPaused)
         {
             forcedAiming = true;
             if (hitTransform != null && Time.time >= lastShotTime + coolDownTime)

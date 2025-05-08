@@ -9,6 +9,8 @@ public class Pause : MonoBehaviour
     public MonoBehaviour cameraController;
     public Canvas _TimerCanvas;
     public Canvas _UsernameCanvas;
+    
+    public static bool IsPaused => _ispaused;
  
     void Update()
     {

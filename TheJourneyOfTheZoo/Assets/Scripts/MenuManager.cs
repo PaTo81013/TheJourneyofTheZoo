@@ -6,7 +6,7 @@ public class MenuManager : MonoBehaviour
     
     public void Play()
     {
-        Loader.Load(Loader.Scene.Playground);
+        Loader.Load(Loader.Scene.Lobby);
     }
 
     public void Settings()

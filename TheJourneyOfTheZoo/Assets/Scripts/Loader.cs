@@ -8,7 +8,9 @@ public static class Loader
     public enum Scene
     {
         LoadingScene,
-        Playground,
+        Lobby,
+        Central,
+        Final,
         MainMenu
     }
 

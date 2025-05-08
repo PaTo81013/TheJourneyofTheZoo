@@ -385,7 +385,7 @@ namespace StarterAssets
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
                 int footstepNumber = Random.Range(1, 11);
-                string footstepName = $"Player_Footstep_{footstepNumber:D2}";
+                string footstepName = $"Pisada_{footstepNumber}";
                 AudioManager.Instance.PlaySfx(footstepName);
 
             }
