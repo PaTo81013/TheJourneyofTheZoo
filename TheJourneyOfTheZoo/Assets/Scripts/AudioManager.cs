@@ -3,25 +3,45 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using System;
 using System.Linq;
-using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance;
+    public static AudioManager Instance { get; private set; }
 
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioSet[] audioSets;
 
-    [FormerlySerializedAs("_musicVolumeMultiplier")] [Range(0, 1), SerializeField] private float musicVolumeMultiplier = 0.25f;
-    [FormerlySerializedAs("_sfxVolumeMultiplier")] [Range(0, 1), SerializeField] private float sfxVolumeMultiplier = 0.7f;
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private Slider sfxSlider;
 
     public const string MusicMixerVolumeParameterName = "Music";
     public const string SfxMixerVolumeParameterName = "SFX";
 
-    public static float MusicVolumeValue => PlayerPrefs.GetFloat("MusicVolume", 1f);
-    public static float SfxVolumeValue => PlayerPrefs.GetFloat("SFXVolume", 1f);
+    private const float MinVolume = 0.0001f;
+    private const float MaxVolume = 1f;
+
+    public static float MusicVolumeValue
+    {
+        get
+        {
+            if (!PlayerPrefs.HasKey("MusicVolume"))
+                PlayerPrefs.SetFloat("MusicVolume", MaxVolume);
+            return PlayerPrefs.GetFloat("MusicVolume");
+        }
+    }
+
+    public static float SfxVolumeValue
+    {
+        get
+        {
+            if (!PlayerPrefs.HasKey("SFXVolume"))
+                PlayerPrefs.SetFloat("SFXVolume", MaxVolume);
+            return PlayerPrefs.GetFloat("SFXVolume");
+        }
+    }
 
     private AudioSet _currentAudioSet;
 
@@ -31,6 +51,9 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            musicSource.ignoreListenerPause = true;
+            sfxSource.ignoreListenerPause = true;
         }
         else
         {
@@ -41,15 +64,33 @@ public class AudioManager : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        if (musicSlider != null)
+            musicSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
+        if (sfxSlider != null)
+            sfxSlider.onValueChanged.AddListener(OnSfxVolumeChanged);
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        if (musicSlider != null)
+            musicSlider.onValueChanged.RemoveListener(OnMusicVolumeChanged);
+        if (sfxSlider != null)
+            sfxSlider.onValueChanged.RemoveListener(OnSfxVolumeChanged);
     }
 
     private void Start()
     {
+        InitializeAudioLevels();
+        LoadAudioForScene(SceneManager.GetActiveScene().name); // Cargar audio de la escena actual al iniciar
+    }
+
+    private void InitializeAudioLevels()
+    {
+        UpdateSliders();
+
         SetMixerVolume(MusicVolumeValue, MusicMixerVolumeParameterName);
         SetMixerVolume(SfxVolumeValue, SfxMixerVolumeParameterName);
     }
@@ -76,12 +117,12 @@ public class AudioManager : MonoBehaviour
     {
         if (musicClip == null)
         {
-            Debug.LogWarning($"Clip de música nulo!");
+            Debug.LogWarning("Clip de música nulo!");
             return;
         }
 
         if (musicSource.clip == musicClip && musicSource.isPlaying)
-            return; // Ya está reproduciendo esta música
+            return;
 
         musicSource.clip = musicClip;
         musicSource.Play();
@@ -96,7 +137,6 @@ public class AudioManager : MonoBehaviour
         }
 
         AudioClip clip = _currentAudioSet.sfxClips.FirstOrDefault(c => c.name == sfxName);
-
         if (clip == null)
         {
             Debug.LogWarning($"Efecto de sonido {sfxName} no encontrado en esta escena.");
@@ -106,24 +146,42 @@ public class AudioManager : MonoBehaviour
         sfxSource.PlayOneShot(clip);
     }
 
+    public void PlaySfx(AudioClip clip)
+    {
+        if (clip == null)
+        {
+            Debug.LogWarning("AudioClip de SFX es nulo.");
+            return;
+        }
+
+        sfxSource.PlayOneShot(clip);
+    }
+
     public void SetMixerVolume(float volume, string mixerChannel)
     {
-        const float minVolume = 0.0001f;
+        float decibels = Mathf.Log10(Mathf.Max(volume, MinVolume)) * 20f;
+
+        bool result = audioMixer.SetFloat(mixerChannel, decibels);
+        if (!result)
+        {
+#if UNITY_EDITOR
+            Debug.LogWarning($"No se encontró el parámetro '{mixerChannel}' en el AudioMixer.");
+#endif
+        }
 
         switch (mixerChannel)
         {
             case MusicMixerVolumeParameterName:
-                audioMixer.SetFloat(mixerChannel, Mathf.Log10((volume + minVolume) * musicVolumeMultiplier) * 20);
                 PlayerPrefs.SetFloat("MusicVolume", volume);
                 break;
             case SfxMixerVolumeParameterName:
-                audioMixer.SetFloat(mixerChannel, Mathf.Log10((volume + minVolume) * sfxVolumeMultiplier) * 20);
                 PlayerPrefs.SetFloat("SFXVolume", volume);
                 break;
         }
 
         PlayerPrefs.Save();
     }
+
     public void OnMusicVolumeChanged(float value)
     {
         SetMixerVolume(value, MusicMixerVolumeParameterName);
@@ -134,10 +192,33 @@ public class AudioManager : MonoBehaviour
         SetMixerVolume(value, SfxMixerVolumeParameterName);
     }
 
-
     public void StopMusic()
     {
         musicSource.Stop();
+    }
+    
+    public void AssignSliders(Slider music, Slider sfx)
+    {
+        if (musicSlider != null)
+            musicSlider.onValueChanged.RemoveListener(OnMusicVolumeChanged);
+        if (sfxSlider != null)
+            sfxSlider.onValueChanged.RemoveListener(OnSfxVolumeChanged);
+
+        musicSlider = music;
+        sfxSlider = sfx;
+
+        if (musicSlider != null)
+            musicSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
+        if (sfxSlider != null)
+            sfxSlider.onValueChanged.AddListener(OnSfxVolumeChanged);
+    }
+
+    public void UpdateSliders()
+    {
+        if (musicSlider != null)
+            musicSlider.value = MusicVolumeValue;
+        if (sfxSlider != null)
+            sfxSlider.value = SfxVolumeValue;
     }
 }
 

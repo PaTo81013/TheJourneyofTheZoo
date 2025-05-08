@@ -385,7 +385,8 @@ namespace StarterAssets
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
                 int footstepNumber = Random.Range(1, 11);
-                AudioManager.Instance.PlaySfx($"Footstep_{footstepNumber}");
+                string footstepName = $"Player_Footstep_{footstepNumber:D2}";
+                AudioManager.Instance.PlaySfx(footstepName);
 
             }
         }
@@ -395,7 +396,7 @@ namespace StarterAssets
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
-                AudioManager.Instance.PlaySfx("Landing");
+                AudioManager.Instance.PlaySfx("Player_Land");
             }
         }
 
