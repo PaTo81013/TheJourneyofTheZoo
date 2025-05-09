@@ -43,4 +43,5 @@ public class TimerManager : MonoBehaviour
         _timerRunning = true;
         UpdateTimerText(_currentTime, _timerTxt);
     }
+    
 }

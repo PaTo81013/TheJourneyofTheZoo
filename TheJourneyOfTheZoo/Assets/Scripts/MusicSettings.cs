@@ -1,17 +1,30 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class MusicSettings : MonoBehaviour
 {
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
 
-    private void Start()
+    private IEnumerator Start()
     {
-        if (AudioManager.Instance != null)
+        yield return new WaitUntil(() => AudioManager.Instance != null);
+        yield return new WaitForEndOfFrame();
+
+        // Si no están asignados manualmente
+        if (musicSlider == null)
+            musicSlider = GameObject.Find("MusicSlider")?.GetComponent<Slider>();
+        if (sfxSlider == null)
+            sfxSlider = GameObject.Find("SfxSlider")?.GetComponent<Slider>();
+
+        if (musicSlider == null || sfxSlider == null)
         {
-            AudioManager.Instance.AssignSliders(musicSlider, sfxSlider); // <= ¡Esto conecta todo!
-            AudioManager.Instance.UpdateSliders(); // Actualiza los valores guardados
+            Debug.LogWarning("No se encontraron sliders de música o efectos.");
+            yield break;
         }
+
+        AudioManager.Instance.AssignSliders(musicSlider, sfxSlider);
+        AudioManager.Instance.UpdateSliders();
     }
 }

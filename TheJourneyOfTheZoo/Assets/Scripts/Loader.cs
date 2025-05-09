@@ -31,12 +31,26 @@ public static class Loader
     private static IEnumerator LoadSceneAsync(Scene scene)
     {
         yield return null;
-        _loadingAsyncOperation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(scene.ToString());
+
+        _loadingAsyncOperation = SceneManager.LoadSceneAsync(scene.ToString());
+        _loadingAsyncOperation.allowSceneActivation = false;
+
+        float minLoadTime = 2f; 
+        float timer = 0f;
+
         while (!_loadingAsyncOperation.isDone)
         {
+            timer += Time.unscaledDeltaTime;
+            
+            if (_loadingAsyncOperation.progress >= 0.9f && timer >= minLoadTime)
+            {
+                _loadingAsyncOperation.allowSceneActivation = true;
+            }
+
             yield return null;
         }
     }
+
 
     public static float GetLoadingProgress()
     {
