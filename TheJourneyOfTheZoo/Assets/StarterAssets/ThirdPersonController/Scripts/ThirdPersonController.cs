@@ -387,7 +387,6 @@ namespace StarterAssets
                 int footstepNumber = Random.Range(1, 11);
                 string footstepName = $"Pisada_{footstepNumber}";
                 AudioManager.Instance.PlaySfx(footstepName);
-
             }
         }
 

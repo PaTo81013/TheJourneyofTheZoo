@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec85b4f0795a8fc49ae57c4a79d83c40, type: 3}
+  m_Name: Parrot
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 3958328490636660064, guid: 5bb2305c6684753468110ed9185f5cf7, type: 3}
+  nombre: Parrot
+  vida: 20
+  movimiento: 45
+  danoMelee: 5
+  cooldownMelee: 2
+  danoHabilidad: 5
+  cooldownHabilidad: 3
+  puntos: 10
+  bonusCritico: 5
+  levelScene: Lobby

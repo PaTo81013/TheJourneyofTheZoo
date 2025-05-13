@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec85b4f0795a8fc49ae57c4a79d83c40, type: 3}
+  m_Name: Orangutan
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 6767320503328839445, guid: 24a1f1b7ee56ccf4188f727de31e2364, type: 3}
+  nombre: Oranguntan
+  vida: 80
+  movimiento: 55
+  danoMelee: 20
+  cooldownMelee: 0.5
+  danoHabilidad: 5
+  cooldownHabilidad: 15
+  puntos: 80
+  bonusCritico: 40
+  levelScene: Final
