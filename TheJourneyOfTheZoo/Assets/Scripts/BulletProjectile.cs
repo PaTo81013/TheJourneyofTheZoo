@@ -10,11 +10,15 @@ public class BulletProjectile : MonoBehaviour
     private Vector3 targetPosition;
     private bool hasImpacted;
     private bool criticalHit;
+    private bool raycastHit;
+    private GameObject enemyGameObjectReached = default;
 
-    public void Setup(Vector3 targetPosition, bool criticalHit)
+    public void Setup(Vector3 targetPosition, bool criticalHit, bool raycastHit, GameObject enemyGameObjectReached)
     {
         this.criticalHit = criticalHit;
+        this.raycastHit = raycastHit;
         this.targetPosition = targetPosition;
+        this.enemyGameObjectReached = enemyGameObjectReached;
         hasImpacted = false;
     }
     
@@ -28,7 +32,7 @@ public class BulletProjectile : MonoBehaviour
         
         float distanceAfter = Vector3.Distance(transform.position, targetPosition);
 
-        if (distanceBefore < distanceAfter)
+        if (distanceBefore < distanceAfter && raycastHit)
         {
             hasImpacted = true;
             TriggerVFXEffect();
@@ -37,6 +41,7 @@ public class BulletProjectile : MonoBehaviour
             transform.Find("Trail").SetParent(null);
             Destroy(gameObject);
             */
+            ExecuteHitBehaviourForTarget();
             this.gameObject.SetActive(false);
         }
     }
@@ -58,7 +63,7 @@ public class BulletProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!hasImpacted)
+        if (!hasImpacted && !raycastHit)
         {
             if (other.CompareTag("CriticalHit"))
             {
@@ -66,7 +71,7 @@ public class BulletProjectile : MonoBehaviour
                 //Instantiate(vfxHitCrit, transform.position, Quaternion.identity);
                 criticalHit = true;
                 TriggerVFXEffect();
-            } else if (other.CompareTag("NormalHit"))
+            } else if (other.CompareTag("NormalHit") || other.CompareTag("MissHit"))
             {
                 //Hit something else
                 //Instantiate(vfxHitNormal, transform.position, Quaternion.identity);
@@ -91,5 +96,17 @@ public class BulletProjectile : MonoBehaviour
             PlayerPoolManager.Instance.TriggerNormalBulletExplosion(transform.position);
         }
         this.gameObject.SetActive(false);
+    }
+
+    private void ExecuteHitBehaviourForTarget()
+    {
+        if (criticalHit)
+        {
+            enemyGameObjectReached.GetComponent<EnemyMovementNavMesh>().GettingCriticalHitByPlayer();
+        }
+        else
+        {
+            enemyGameObjectReached.GetComponent<EnemyMovementNavMesh>().GettingHitByPlayer();
+        }
     }
 }

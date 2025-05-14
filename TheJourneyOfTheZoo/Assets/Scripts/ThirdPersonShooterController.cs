@@ -24,6 +24,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     private StarterAssetsInputs starterAssetsInputs;
     private Animator animator;
     private Transform hitTransform;
+    private GameObject reachedGameObjectWithRaycastHit = default;
     private bool forcedAiming = false;
     private float lastShotTime = 0f;
     private float coolDownTime = 0.3f;
@@ -84,12 +85,18 @@ public class ThirdPersonShooterController : MonoBehaviour
             if (hitTransform != null && Time.time >= lastShotTime + coolDownTime)
             {
                 Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
-                if (hitTransform.gameObject.CompareTag("CriticalHit"))
+                reachedGameObjectWithRaycastHit = hitTransform.root.gameObject;
+                if (hitTransform.gameObject.CompareTag("MissHit"))
                 {
-                    PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition, true);
-                } else
+                    PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition, false, false, reachedGameObjectWithRaycastHit);
+                }
+                else if (hitTransform.gameObject.CompareTag("CriticalHit"))
                 {
-                    PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition, false);
+                    PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition, true, true, reachedGameObjectWithRaycastHit);
+                } 
+                else if (hitTransform.gameObject.CompareTag("NormalHit"))
+                {
+                    PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition, false, true, reachedGameObjectWithRaycastHit);
                 }
                 lastShotTime = Time.time;
             }

@@ -24,7 +24,7 @@ public class PlayerPoolManager : MonoBehaviour
         }
     }
 
-    public void InstantiateBulletForShoot(Vector3 positionToBeSpawned, Vector3 aimingDirection, Vector3 targetPosition, bool criticalHit)
+    public void InstantiateBulletForShoot(Vector3 positionToBeSpawned, Vector3 aimingDirection, Vector3 targetPosition, bool criticalHit, bool raycastHit, GameObject reachedGameObject)
     {
         //Verificamos si no existe un game object disponible en la jerarquia
         for (int i = 0; i < BulletList.Count; i++)
@@ -33,7 +33,7 @@ public class PlayerPoolManager : MonoBehaviour
             {
                 BulletList[i].transform.rotation = Quaternion.LookRotation(aimingDirection, Vector3.up); 
                 BulletList[i].transform.position = positionToBeSpawned;
-                BulletList[i].GetComponent<BulletProjectile>().Setup(targetPosition, criticalHit);
+                BulletList[i].GetComponent<BulletProjectile>().Setup(targetPosition, criticalHit, raycastHit, reachedGameObject);
                 BulletList[i].SetActive(true);
                 return;
             }
@@ -41,8 +41,9 @@ public class PlayerPoolManager : MonoBehaviour
         
         //Si no hay game objects disponibles, entonces instanciamos uno y lo agregamos al pool
         GameObject newBullet = Instantiate(bulletPrefab, positionToBeSpawned, Quaternion.LookRotation(aimingDirection, Vector3.up));
-        newBullet.GetComponent<BulletProjectile>().Setup(targetPosition, criticalHit);
-        BulletList.Add(Instantiate(bulletPrefab, positionToBeSpawned, Quaternion.LookRotation(aimingDirection, Vector3.up)));
+        newBullet.GetComponent<BulletProjectile>().Setup(targetPosition, criticalHit, raycastHit, reachedGameObject);
+        //BulletList.Add(Instantiate(bulletPrefab, positionToBeSpawned, Quaternion.LookRotation(aimingDirection, Vector3.up)));
+        BulletList.Add(newBullet);
     }
 
     public void TriggerNormalBulletExplosion(Vector3 positionToBeSpawned)

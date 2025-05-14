@@ -10,6 +10,8 @@ public class EnemyMovementNavMesh : MonoBehaviour
     [SerializeField] private Transform pathfinding_Target;
     [SerializeField] private float attack_Distance;
     private float pathfinding_Distance = 0f;
+    private bool attackingAnimation = false;
+    private bool forcedInPlace = false;
 
     private void Start()
     {
@@ -20,22 +22,29 @@ public class EnemyMovementNavMesh : MonoBehaviour
     void Update()
     {
         AnimationIdleOrRunBehaviour();
-        MovingThroughPathfinding();
+        if (!forcedInPlace)
+        {
+            MovingThroughPathfinding();
+        }
     }
 
     private void MovingThroughPathfinding()
     {
         pathfinding_Distance = Vector3.Distance(agent.transform.position, pathfinding_Target.position);
-        if (pathfinding_Distance < attack_Distance)
+        if (pathfinding_Distance <= attack_Distance)
         {
             agent.isStopped = true;
+            attackingAnimation = true;
             animator.SetBool("Attack", true);
         }
         else
         {
-            agent.isStopped = false;
-            animator.SetBool("Attack", false);
-            agent.destination = pathfinding_Target.position;
+            if (!attackingAnimation)
+            {
+                agent.isStopped = false;
+                //animator.SetBool("Attack", false);
+                agent.destination = pathfinding_Target.position;
+            }
         }
     }
 
@@ -50,5 +59,43 @@ public class EnemyMovementNavMesh : MonoBehaviour
             animator.SetBool("Running", false);
         }
     }
+
+    private void TurningOffAttackingAnimationStatus()
+    {
+        attackingAnimation = false;
+        animator.SetBool("Attack", false);
+    }
+
+    public void GettingHitByPlayer()
+    {
+        //TriggerForcedInPlace();
+    }
     
+    public void GettingCriticalHitByPlayer()
+    {
+        TriggerForcedInPlace();
+        GettingHitAnimationtTrigger();
+    }
+
+    private void TriggerForcedInPlace()
+    {
+        forcedInPlace = true;
+    }
+
+    private void TriggerNoLongerInPlace()
+    {
+        forcedInPlace = false;
+    }
+
+    private void GettingHitAnimationtTrigger()
+    {
+        animator.SetBool("Attack", false);
+        animator.SetBool("Hit", true);
+    }
+    
+    private void EndingGettingHitAnimation()
+    {
+        TriggerNoLongerInPlace();
+        animator.SetBool("Hit", false);
+    }
 }
