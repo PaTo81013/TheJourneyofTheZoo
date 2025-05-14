@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f818deb3744add48bc4e39e5a898a15, type: 3}
   m_Name: Seed Strike
   m_EditorClassIdentifier: 
-  ScorestreaksGameObject: {fileID: 919132149155446097, guid: 0483aaf0916d7e740b116b68b01f8bfe, type: 3}
+  scorestreaksPrefab: {fileID: 919132149155446097, guid: 0483aaf0916d7e740b116b68b01f8bfe, type: 3}
   nombre: Seed Strike
   duracion: 0
   regeneracionDeVida: 0

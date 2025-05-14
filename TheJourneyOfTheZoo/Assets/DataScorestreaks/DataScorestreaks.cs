@@ -1,19 +1,22 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace DataScorestreaks
 {
     [CreateAssetMenu(fileName = "Scorestreaks", menuName = "Scorestreaks/Streak Data")]
     public class DataScorestreaks : ScriptableObject
     {
-        [SerializeField] private GameObject ScorestreaksGameObject;
-        [SerializeField] private string nombre;
-        [SerializeField] private float duracion;
+        public GameObject Prefab => scorestreaksPrefab;
         
-        [SerializeField] private int regeneracionDeVida;
-        [SerializeField] private int regeneracionDeEscudo;
+        [SerializeField] private GameObject scorestreaksPrefab;
+        public string nombre;
+        public float duracion;
         
-        [SerializeField] private int puntosPorUso;
-        [SerializeField] private int cantidadRequerida;
+        public int regeneracionDeVida;
+        public int regeneracionDeEscudo;
+        
+        public int puntosPorUso;
+        public int cantidadRequerida;
         
     }
 }

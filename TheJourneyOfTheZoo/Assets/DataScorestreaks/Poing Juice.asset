@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f818deb3744add48bc4e39e5a898a15, type: 3}
   m_Name: Poing Juice
   m_EditorClassIdentifier: 
-  ScorestreaksGameObject: {fileID: 919132149155446097, guid: e53fe559c44f7424dab3d98615a3fe79, type: 3}
+  scorestreaksPrefab: {fileID: 919132149155446097, guid: e53fe559c44f7424dab3d98615a3fe79, type: 3}
   nombre: Poing Juice
   duracion: 0
   regeneracionDeVida: 100
