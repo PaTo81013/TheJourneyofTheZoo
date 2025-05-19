@@ -1,22 +1,34 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.PlayerLoop;
 
 public class EnemyMovementNavMesh : MonoBehaviour
 {
+    [SerializeField] public DataEnemies.DataEnemies enemy_Data;
     private NavMeshAgent agent;
     private Animator animator;
     [SerializeField] private Transform pathfinding_Target;
     [SerializeField] private float attack_Distance;
+    [SerializeField] private GameObject enemy_Attack_Hitbox;
     private float pathfinding_Distance = 0f;
     private bool attackingAnimation = false;
     private bool forcedInPlace = false;
+    
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        ResetEnemyStatus();
+    }
+
+    public void ResetEnemyStatus()
+    {
+        attackingAnimation = false;
+        forcedInPlace = false;
+        pathfinding_Distance = 0f;
     }
 
     void Update()
@@ -74,28 +86,49 @@ public class EnemyMovementNavMesh : MonoBehaviour
     public void GettingCriticalHitByPlayer()
     {
         TriggerForcedInPlace();
-        GettingHitAnimationtTrigger();
+        GettingHitAnimationtTriggerOnCritHit();
+        CheckAttackHitBoxStatusAndTurnOff();
     }
 
     private void TriggerForcedInPlace()
     {
         forcedInPlace = true;
+        agent.isStopped = true;
     }
 
     private void TriggerNoLongerInPlace()
     {
         forcedInPlace = false;
+        agent.isStopped = false;
     }
 
-    private void GettingHitAnimationtTrigger()
+    private void GettingHitAnimationtTriggerOnCritHit()
     {
         animator.SetBool("Attack", false);
-        animator.SetBool("Hit", true);
+        animator.SetTrigger("Hit");
     }
     
     private void EndingGettingHitAnimation()
     {
         TriggerNoLongerInPlace();
-        animator.SetBool("Hit", false);
+        //animator.SetBool("Hit", false);
+    }
+
+    private void AttackHitboxON()
+    {
+        enemy_Attack_Hitbox.SetActive(true);
+    }
+
+    private void AttackHitboxOFF()
+    {
+        enemy_Attack_Hitbox.SetActive(false);
+    }
+
+    private void CheckAttackHitBoxStatusAndTurnOff()
+    {
+        if (enemy_Attack_Hitbox.activeInHierarchy)
+        {
+            AttackHitboxOFF();
+        }
     }
 }
