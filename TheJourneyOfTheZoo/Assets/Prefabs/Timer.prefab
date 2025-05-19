@@ -130,7 +130,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 22.660767, y: -1.9222412, z: -37.473022, w: -5.7823486}
+  m_margin: {x: 21.001587, y: -1.9222412, z: -37.473022, w: -5.7823486}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 4132644362485842609}
   - component: {fileID: 4773405644736331578}
   - component: {fileID: 3556107425135041342}
+  - component: {fileID: 8593619474540388528}
   m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
@@ -240,6 +241,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
 --- !u!114 &3556107425135041342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7583025194599754481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3733a243bea765a4d972b1626906ba68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timerTxt: {fileID: 3923590325204790348}
+  limitTime: 600
+--- !u!114 &8593619474540388528
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

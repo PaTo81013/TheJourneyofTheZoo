@@ -29,6 +29,8 @@ public class ThirdPersonShooterController : MonoBehaviour
     private float lastShotTime = 0f;
     private float coolDownTime = 0.3f;
     
+    public ScoreManager scoreManager;
+    
 
     private void Awake()
     {
@@ -93,10 +95,12 @@ public class ThirdPersonShooterController : MonoBehaviour
                 else if (hitTransform.gameObject.CompareTag("CriticalHit"))
                 {
                     PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition, true, true, reachedGameObjectWithRaycastHit);
+                    scoreManager.BonusPoints(0);
                 } 
                 else if (hitTransform.gameObject.CompareTag("NormalHit"))
                 {
                     PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition, false, true, reachedGameObjectWithRaycastHit);
+                    scoreManager.Points(0);
                 }
                 lastShotTime = Time.time;
             }
