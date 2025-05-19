@@ -16,10 +16,10 @@ namespace StarterAssets
     {
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
-        public float MoveSpeed = 2.0f;
+        public float MoveSpeed = 5.335f;
 
         [Tooltip("Sprint speed of the character in m/s")]
-        public float SprintSpeed = 5.335f;
+        public float SprintSpeed = 7f;
 
         [Tooltip("How fast the character turns to face movement direction")]
         [Range(0.0f, 0.3f)]
@@ -103,6 +103,7 @@ namespace StarterAssets
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
         private bool _rotateOnMove = true;
+        private bool _enableMovement = true;
 
         private const float _threshold = 0.01f;
 
@@ -156,7 +157,10 @@ namespace StarterAssets
 
             JumpAndGravity();
             GroundedCheck();
-            Move();
+            if (_enableMovement)
+            {
+                Move();
+            }
         }
 
         private void LateUpdate()
@@ -378,6 +382,11 @@ namespace StarterAssets
         public void SetRotateOnMove(bool newRotateOnMove)
         {
             _rotateOnMove = newRotateOnMove;
+        }
+
+        public void SetMovementState(bool newMovementState)
+        {
+            _enableMovement = newMovementState;
         }
 
         private void OnFootstep(AnimationEvent animationEvent)

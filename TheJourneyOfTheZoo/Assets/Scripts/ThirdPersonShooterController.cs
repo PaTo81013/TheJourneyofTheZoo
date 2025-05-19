@@ -27,10 +27,18 @@ public class ThirdPersonShooterController : MonoBehaviour
     private GameObject reachedGameObjectWithRaycastHit = default;
     private bool forcedAiming = false;
     private float lastShotTime = 0f;
-    private float coolDownTime = 0.3f;
-    
-    public ScoreManager scoreManager;
-    
+    private float lastHitBTime = 0f;
+    private float hitBTimeStunTime = 2f;
+    private bool hitStunned = false;
+    //Player Modifiers
+    private float weaponCoolDownTime = 0.3f;
+    private int maxHitPoints = 100;
+    private int currentHitPoints = 100;
+    private int damagePerShot = 10;
+    private int critMultiplier = 2;
+    private int maxWeaponAmmo = 45;
+    private int currentWeaponAmmo = 45;
+    private float reloadTime = 1.5f;
 
     private void Awake()
     {
@@ -84,7 +92,7 @@ public class ThirdPersonShooterController : MonoBehaviour
         if (starterAssetsInputs.shoot && !Pause.IsPaused)
         {
             forcedAiming = true;
-            if (hitTransform != null && Time.time >= lastShotTime + coolDownTime)
+            if (hitTransform != null && Time.time >= lastShotTime + weaponCoolDownTime)
             {
                 Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
                 reachedGameObjectWithRaycastHit = hitTransform.root.gameObject;
@@ -95,12 +103,10 @@ public class ThirdPersonShooterController : MonoBehaviour
                 else if (hitTransform.gameObject.CompareTag("CriticalHit"))
                 {
                     PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition, true, true, reachedGameObjectWithRaycastHit);
-                    scoreManager.BonusPoints(0);
                 } 
                 else if (hitTransform.gameObject.CompareTag("NormalHit"))
                 {
                     PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition, false, true, reachedGameObjectWithRaycastHit);
-                    scoreManager.Points(0);
                 }
                 lastShotTime = Time.time;
             }
@@ -113,6 +119,13 @@ public class ThirdPersonShooterController : MonoBehaviour
         else
         {
             forcedAiming = false;
+        }
+
+        if (hitStunned && Time.time >= lastHitBTime + hitBTimeStunTime)
+        {
+            animator.SetBool("GettingHitB", false);
+            hitStunned = false;
+            thirdPersonController.SetMovementState(!hitStunned);
         }
         
     }
@@ -134,5 +147,19 @@ public class ThirdPersonShooterController : MonoBehaviour
     private void ToggleAimingRig(bool rigOption)
     {
         fullBodyAimingRig.weight = rigOption ? 1 : 0;
+    }
+
+    public void TakingDamageFromEnemies(int damageTaken)
+    {
+        currentHitPoints -= damageTaken;
+        TriggerBackwardHitAnimation();
+    }
+
+    private void TriggerBackwardHitAnimation()
+    {
+        lastHitBTime = Time.time;
+        animator.SetBool("GettingHitB", true);
+        hitStunned = true;
+        thirdPersonController.SetMovementState(!hitStunned);
     }
 }

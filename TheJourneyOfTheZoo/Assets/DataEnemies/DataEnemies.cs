@@ -5,20 +5,20 @@ namespace DataEnemies
     [CreateAssetMenu(fileName = "New Enemy", menuName = "Enemies/Enemy Data")]
     public class DataEnemies : ScriptableObject
     {
-        public GameObject enemyPrefab;
-        public string nombre;
+        //[SerializeField] private GameObject enemyPrefab;
+        [SerializeField] private string nombre;
         
-        public int vida;
-        public int movimiento;
-        public int danoMelee;
-        public float cooldownMelee;
+        [SerializeField] public int vida;
+        [SerializeField] public int movimiento;
+        [SerializeField] public int danoMelee;
+        [SerializeField] public float cooldownMelee;
         
-        public int  danoHabilidad;
-        public float cooldownHabilidad;
+        [SerializeField] public int  danoHabilidad;
+        [SerializeField] public float cooldownHabilidad;
         
-        public int puntos;
-        public int bonusCritico;
+        [SerializeField] public int puntos;
+        [SerializeField] public int bonusCritico;
         
-        public string levelScene;
+        [SerializeField] public string levelScene;
     }
 }
