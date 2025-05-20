@@ -1,9 +1,10 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TimerManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _timerTxt = default;
+    [SerializeField] private TextMeshProUGUI timerTxt = default;
     [SerializeField] private float limitTime = 40f;
 
     private float _currentTime;
@@ -27,7 +28,7 @@ public class TimerManager : MonoBehaviour
             _timerRunning = false;
         }
 
-        UpdateTimerText(_currentTime, _timerTxt);
+        UpdateTimerText(_currentTime, timerTxt);
     }
 
     private void UpdateTimerText(float currentTimer, TextMeshProUGUI cronometer)
@@ -41,7 +42,7 @@ public class TimerManager : MonoBehaviour
     {
         _currentTime = 0f; // 🔥 Empieza en 0
         _timerRunning = true;
-        UpdateTimerText(_currentTime, _timerTxt);
+        UpdateTimerText(_currentTime, timerTxt);
     }
     
 }

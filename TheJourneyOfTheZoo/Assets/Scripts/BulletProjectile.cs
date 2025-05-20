@@ -109,4 +109,5 @@ public class BulletProjectile : MonoBehaviour
             enemyGameObjectReached.GetComponent<EnemyMovementNavMesh>().GettingHitByPlayer();
         }
     }
+    
 }

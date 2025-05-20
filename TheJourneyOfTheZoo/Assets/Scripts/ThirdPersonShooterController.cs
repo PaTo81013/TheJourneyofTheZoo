@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
-using Cinemachine;
 using StarterAssets;
+using Unity.Cinemachine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.Animations.Rigging;
+using Random = UnityEngine.Random;
 
 public class ThirdPersonShooterController : MonoBehaviour
 {

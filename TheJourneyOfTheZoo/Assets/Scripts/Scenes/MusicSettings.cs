@@ -11,8 +11,7 @@ public class MusicSettings : MonoBehaviour
     {
         yield return new WaitUntil(() => AudioManager.Instance != null);
         yield return new WaitForEndOfFrame();
-
-        // Si no están asignados manualmente
+        
         if (musicSlider == null)
             musicSlider = GameObject.Find("MusicSlider")?.GetComponent<Slider>();
         if (sfxSlider == null)

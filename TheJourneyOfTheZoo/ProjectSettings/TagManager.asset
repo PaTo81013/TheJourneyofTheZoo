@@ -9,6 +9,7 @@ TagManager:
   - CriticalHit
   - MissHit
   - EnemyAttack
+  - Enemy
   layers:
   - Default
   - TransparentFX

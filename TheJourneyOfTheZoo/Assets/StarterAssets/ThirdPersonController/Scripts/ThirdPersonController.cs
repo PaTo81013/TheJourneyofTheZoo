@@ -108,7 +108,7 @@ namespace StarterAssets
         private const float _threshold = 0.01f;
 
         private bool _hasAnimator;
-
+       
         private bool IsCurrentDeviceMouse
         {
             get
@@ -120,8 +120,7 @@ namespace StarterAssets
 #endif
             }
         }
-
-
+        
         private void Awake()
         {
             // get a reference to our main camera
@@ -398,8 +397,7 @@ namespace StarterAssets
                 AudioManager.Instance.PlaySfx(footstepName);
             }
         }
-
-
+        
         private void OnLand(AnimationEvent animationEvent)
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
@@ -407,6 +405,5 @@ namespace StarterAssets
                 AudioManager.Instance.PlaySfx("Player_Land");
             }
         }
-
     }
 }
