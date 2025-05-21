@@ -1,28 +1,31 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections;
 
-public class TestConnection : MonoBehaviour
+namespace SQL
 {
-    void Start()
+    public class TestConnection : MonoBehaviour
     {
-        StartCoroutine(CheckConnection());
-    }
-
-    IEnumerator CheckConnection()
-    {
-        string url = "https://pato81013.com/TJOTZ/connect.php";
-
-        UnityWebRequest request = UnityWebRequest.Get(url);
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        void Start()
         {
-            Debug.LogError("Error: " + request.error);
+            StartCoroutine(CheckConnection());
         }
-        else
+
+        IEnumerator CheckConnection()
         {
-            Debug.Log("Respuesta del servidor: " + request.downloadHandler.text);
+            string url = "https://pato81013.com/TJOTZ/connect.php";
+
+            UnityWebRequest request = UnityWebRequest.Get(url);
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("Error: " + request.error);
+            }
+            else
+            {
+                Debug.Log("Respuesta del servidor: " + request.downloadHandler.text);
+            }
         }
     }
 }

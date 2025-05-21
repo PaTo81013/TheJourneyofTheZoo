@@ -1,37 +1,57 @@
 using UnityEngine;
 
-public class Pause : MonoBehaviour
-{ 
-    private static bool _ispaused = false;
-    public GameObject pauseCanvas;
-    public GameObject CrosshairGameObject;
-    public MonoBehaviour cameraController;
-    public Canvas _TimerCanvas;
-    public Canvas _UsernameCanvas;
-    public static bool IsPaused => _ispaused;
-    public static void SetPaused(bool state)
-    {
-        _ispaused = state;
-    }
-    
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
+namespace Scenes
+{
+    public class Pause : MonoBehaviour
+    { 
+        private static bool _isPaused;
+        public GameObject pauseCanvas;
+        public GameObject crosshairGameObject;
+        public MonoBehaviour cameraController;
+        public Canvas timerCanvas;
+        public Canvas usernameCanvas;
+        public Canvas scoreCanvas;
+        public static bool IsPaused => _isPaused;
+        private static void SetPaused(bool state)
         {
-            SetPaused(!_ispaused);
-        
-            Time.timeScale = _ispaused ? 0 : 1;
-            pauseCanvas.SetActive(_ispaused);
-            CrosshairGameObject.SetActive(!_ispaused);
-            _TimerCanvas.enabled = !_ispaused;
-            _UsernameCanvas.enabled = !_ispaused;
+            _isPaused = state;
+        }
 
-            Cursor.lockState = _ispaused ? CursorLockMode.None : CursorLockMode.Locked;
-            Cursor.visible = _ispaused;
+        void Start()
+        {
+            SetPaused(false);
+            Time.timeScale = 1;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            pauseCanvas.SetActive(false);
+            crosshairGameObject.SetActive(true);
+            timerCanvas.enabled = true;
+            usernameCanvas.enabled = true;
+            scoreCanvas.enabled = true;
 
             if (cameraController != null)
-                cameraController.enabled = !_ispaused;
+                cameraController.enabled = true;
+        }
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
+            {
+                SetPaused(!_isPaused);
+        
+                Time.timeScale = _isPaused ? 0 : 1;
+                pauseCanvas.SetActive(_isPaused);
+                crosshairGameObject.SetActive(!_isPaused);
+                timerCanvas.enabled = !_isPaused;
+                usernameCanvas.enabled = !_isPaused;
+                scoreCanvas.enabled = !_isPaused;                
+
+                Cursor.lockState = _isPaused ? CursorLockMode.None : CursorLockMode.Locked;
+                Cursor.visible = _isPaused;
+
+                if (cameraController != null)
+                    cameraController.enabled = !_isPaused;
+            }
         }
     }
-
 }

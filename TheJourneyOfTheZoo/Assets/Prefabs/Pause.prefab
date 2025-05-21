@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 3163304980945692017}
   - component: {fileID: 5771215371997186540}
   - component: {fileID: 2548282121327050337}
-  - component: {fileID: 8471537887815838576}
+  - component: {fileID: 4761579587137708448}
   m_Layer: 5
   m_Name: Pause
   m_TagString: Untagged
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8471537887815838576
+--- !u!114 &4761579587137708448
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -191,10 +191,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseCanvas: {fileID: 7971272487479818190}
-  CrosshairGameObject: {fileID: 0}
+  crosshairGameObject: {fileID: 0}
   cameraController: {fileID: 0}
-  _TimerCanvas: {fileID: 0}
-  _UsernameCanvas: {fileID: 0}
+  timerCanvas: {fileID: 0}
+  usernameCanvas: {fileID: 0}
 --- !u!1 &2412269198579341604
 GameObject:
   m_ObjectHideFlags: 0

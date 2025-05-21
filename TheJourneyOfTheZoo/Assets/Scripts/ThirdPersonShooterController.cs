@@ -1,4 +1,5 @@
 using System;
+using Scenes;
 using UnityEngine;
 using StarterAssets;
 using Unity.Cinemachine;
@@ -20,7 +21,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     [SerializeField] private Transform spawnBulletPosition;
     
     [SerializeField] private Rig fullBodyAimingRig;
-
+    
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInputs;
     private Animator animator;

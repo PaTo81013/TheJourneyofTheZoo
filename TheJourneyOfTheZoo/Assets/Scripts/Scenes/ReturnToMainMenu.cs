@@ -1,9 +1,12 @@
 using UnityEngine;
 
-public class ReturnToMainMenu : MonoBehaviour
+namespace Scenes
 {
-   public void ReturnToMainMenuButton()
+   public class ReturnToMainMenu : MonoBehaviour
    {
-      Loader.Load(Loader.Scene.MainMenu);
+      public void ReturnToMainMenuButton()
+      {
+         Loader.Load(Loader.Scene.MainMenu);
+      }
    }
 }

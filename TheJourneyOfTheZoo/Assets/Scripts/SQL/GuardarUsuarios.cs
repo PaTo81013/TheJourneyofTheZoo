@@ -1,57 +1,60 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
-using TMPro;
-using System.Collections;
 
-public class GuardarUsuario : MonoBehaviour
+namespace SQL
 {
-    public TMP_InputField inputField; // Arrástralo desde el inspector
-    public string url = "https://pato81013.com/TJOTZ/registrar_usuario.php";
-
-    public void GuardarYEnviar()
+    public class SaveSendUser : MonoBehaviour
     {
-        string nombre = inputField.text.Trim();
+        public TMP_InputField inputField;
+        public string url = "https://pato81013.com/TJOTZ/registrar_usuario.php";
 
-        if (!string.IsNullOrEmpty(nombre))
+        public void SaveUser()
         {
-            PlayerPrefs.SetString("Usuario", nombre);
-            Debug.Log("✅ Usuario guardado localmente: " + nombre);
-            StartCoroutine(EnviarNombreAlServidor(nombre));
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ Campo vacío.");
-        }
-    }
+            string nombre = inputField.text.Trim();
 
-    IEnumerator EnviarNombreAlServidor(string nombre)
-    {
-        WWWForm form = new WWWForm();
-        form.AddField("nombre", nombre);
-
-        UnityWebRequest www = UnityWebRequest.Post(url, form);
-        yield return www.SendWebRequest();
-
-        if (www.result != UnityWebRequest.Result.Success)
-        {
-            Debug.LogError("❌ Error al enviar al servidor: " + www.error);
-        }
-        else
-        {
-            string respuesta = www.downloadHandler.text;
-            Debug.Log("🧠 Servidor respondió: " + respuesta);
-
-            if (respuesta == "registro_exitoso")
+            if (!string.IsNullOrEmpty(nombre))
             {
-                Debug.Log("🟢 Usuario registrado en base de datos");
-            }
-            else if (respuesta == "usuario_existente")
-            {
-                Debug.Log("🟡 El usuario ya existe");
+                PlayerPrefs.SetString("Usuario", nombre);
+                Debug.Log("✅ Usuario guardado localmente: " + nombre);
+                StartCoroutine(SendNameToServer(nombre));
             }
             else
             {
-                Debug.LogWarning("Respuesta inesperada: " + respuesta);
+                Debug.LogWarning("⚠️ Campo vacío.");
+            }
+        }
+
+        IEnumerator SendNameToServer(string nombre)
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("nombre", nombre);
+
+            UnityWebRequest www = UnityWebRequest.Post(url, form);
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("❌ Error al enviar al servidor: " + www.error);
+            }
+            else
+            {
+                string answer = www.downloadHandler.text;
+                Debug.Log("🧠 Servidor respondió: " + answer);
+
+                if (answer == "registro_exitoso")
+                {
+                    Debug.Log("🟢 Usuario registrado en base de datos");
+                }
+                else if (answer == "usuario_existente")
+                {
+                    Debug.Log("🟡 El usuario ya existe");
+                }
+                else
+                {
+                    Debug.LogWarning("Respuesta inesperada: " + answer);
+                }
             }
         }
     }

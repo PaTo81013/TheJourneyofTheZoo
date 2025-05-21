@@ -1,29 +1,32 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-public class MusicSettings : MonoBehaviour
+namespace Scenes
 {
-    [SerializeField] private Slider musicSlider;
-    [SerializeField] private Slider sfxSlider;
-
-    private IEnumerator Start()
+    public class MusicSettings : MonoBehaviour
     {
-        yield return new WaitUntil(() => AudioManager.Instance != null);
-        yield return new WaitForEndOfFrame();
-        
-        if (musicSlider == null)
-            musicSlider = GameObject.Find("MusicSlider")?.GetComponent<Slider>();
-        if (sfxSlider == null)
-            sfxSlider = GameObject.Find("SfxSlider")?.GetComponent<Slider>();
+        [SerializeField] private Slider musicSlider;
+        [SerializeField] private Slider sfxSlider;
 
-        if (musicSlider == null || sfxSlider == null)
+        private IEnumerator Start()
         {
-            Debug.LogWarning("No se encontraron sliders de música o efectos.");
-            yield break;
-        }
+            yield return new WaitUntil(() => AudioManager.Instance != null);
+            yield return new WaitForEndOfFrame();
+        
+            if (musicSlider == null)
+                musicSlider = GameObject.Find("MusicSlider")?.GetComponent<Slider>();
+            if (sfxSlider == null)
+                sfxSlider = GameObject.Find("SfxSlider")?.GetComponent<Slider>();
 
-        AudioManager.Instance.AssignSliders(musicSlider, sfxSlider);
-        AudioManager.Instance.UpdateSliders();
+            if (musicSlider == null || sfxSlider == null)
+            {
+                Debug.LogWarning("No se encontraron sliders de música o efectos.");
+                yield break;
+            }
+
+            AudioManager.Instance.AssignSliders(musicSlider, sfxSlider);
+            AudioManager.Instance.UpdateSliders();
+        }
     }
 }

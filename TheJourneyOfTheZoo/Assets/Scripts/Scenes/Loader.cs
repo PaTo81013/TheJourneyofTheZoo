@@ -2,72 +2,76 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public static class Loader
+
+namespace Scenes
 {
-    private class LoadingMonoBehaviour: MonoBehaviour { }
-    public enum Scene
+    public static class Loader
     {
-        LoadingScene,
-        Lobby,
-        Central,
-        Final,
-        MainMenu
-    }
+        private class LoadingMonoBehaviour: MonoBehaviour { }
+        public enum Scene
+        {
+            LoadingScene,
+            Lobby,
+            Central,
+            Final,
+            MainMenu
+        }
 
-    private static Action _onLoaderCallback;
-    private static AsyncOperation _loadingAsyncOperation;
+        private static Action _onLoaderCallback;
+        private static AsyncOperation _loadingAsyncOperation;
     
-    public static void Load(Scene scene)
-    {
-        _onLoaderCallback = () =>
+        public static void Load(Scene scene)
         {
-            GameObject loadingGameObject = new GameObject("Loading Game Object");
-            loadingGameObject.AddComponent<LoadingMonoBehaviour>().StartCoroutine(LoadSceneAsync(scene));
-        };
-        
-        UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(Scene.LoadingScene.ToString());
-    }
-
-    private static IEnumerator LoadSceneAsync(Scene scene)
-    {
-        yield return null;
-
-        _loadingAsyncOperation = SceneManager.LoadSceneAsync(scene.ToString());
-        _loadingAsyncOperation.allowSceneActivation = false;
-
-        float minLoadTime = 2f; 
-        float timer = 0f;
-
-        while (!_loadingAsyncOperation.isDone)
-        {
-            timer += Time.unscaledDeltaTime;
-            
-            if (_loadingAsyncOperation.progress >= 0.9f && timer >= minLoadTime)
+            _onLoaderCallback = () =>
             {
-                _loadingAsyncOperation.allowSceneActivation = true;
-            }
+                GameObject loadingGameObject = new GameObject("Loading Game Object");
+                loadingGameObject.AddComponent<LoadingMonoBehaviour>().StartCoroutine(LoadSceneAsync(scene));
+            };
+        
+            SceneManager.LoadSceneAsync(Scene.LoadingScene.ToString());
+        }
 
+        private static IEnumerator LoadSceneAsync(Scene scene)
+        {
             yield return null;
+
+            _loadingAsyncOperation = SceneManager.LoadSceneAsync(scene.ToString());
+            _loadingAsyncOperation.allowSceneActivation = false;
+
+            float minLoadTime = 2f; 
+            float timer = 0f;
+
+            while (!_loadingAsyncOperation.isDone)
+            {
+                timer += Time.unscaledDeltaTime;
+            
+                if (_loadingAsyncOperation.progress >= 0.9f && timer >= minLoadTime)
+                {
+                    _loadingAsyncOperation.allowSceneActivation = true;
+                }
+
+                yield return null;
+            }
         }
-    }
 
 
-    public static float GetLoadingProgress()
-    {
-        if (_loadingAsyncOperation !=null)
+        public static float GetLoadingProgress()
         {
-            return _loadingAsyncOperation.progress;
+            if (_loadingAsyncOperation !=null)
+            {
+                return _loadingAsyncOperation.progress;
+            }
+            else
+            {
+                return 1f;
+            }
         }
-        else
-        {
-            return 1f;
-        }
-    }
     
-    public static void LoaderCallback ()
-    {
-        if (_onLoaderCallback == null) return;
-        _onLoaderCallback();
-        _onLoaderCallback = null;
+        public static void LoaderCallback ()
+        {
+            if (_onLoaderCallback == null) return;
+            _onLoaderCallback();
+            _onLoaderCallback = null;
+        }
     }
 }

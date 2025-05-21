@@ -127,5 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179cf23322f2f20439267754e76e4dea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy_Data: {fileID: 11400000, guid: 7641ae9b41b2b2a4c90d6599cf6ae8ad, type: 2}
   pathfinding_Target: {fileID: 0}
   attack_Distance: 3
+  enemy_Attack_Hitbox: {fileID: 0}
