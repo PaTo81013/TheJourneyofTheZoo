@@ -40,22 +40,22 @@ namespace SQL
             }
             else
             {
-                string answer = www.downloadHandler.text;
-                Debug.Log("🧠 Servidor respondió: " + answer);
+                string respuesta = www.downloadHandler.text;
+                Debug.Log("🧠 Servidor respondió: " + respuesta);
 
-                if (answer == "registro_exitoso")
+                if (respuesta == "registro_exitoso")
                 {
                     Debug.Log("🟢 Usuario registrado en base de datos");
                 }
-                else if (answer == "usuario_existente")
+                else if (respuesta == "usuario_existente")
                 {
                     Debug.Log("🟡 El usuario ya existe");
                 }
                 else
                 {
-                    Debug.LogWarning("Respuesta inesperada: " + answer);
+                    Debug.LogWarning("Respuesta inesperada: " + respuesta);
                 }
-            }
-        }
+            } 
+        } 
     }
 }
