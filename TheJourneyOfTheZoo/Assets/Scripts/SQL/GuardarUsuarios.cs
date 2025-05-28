@@ -29,7 +29,7 @@ namespace SQL
         IEnumerator SendNameToServer(string nombre)
         {
             WWWForm form = new WWWForm();
-            form.AddField("nombre", nombre);
+            form.AddField("Nombre",nombre);
 
             UnityWebRequest www = UnityWebRequest.Post(url, form);
             yield return www.SendWebRequest();
