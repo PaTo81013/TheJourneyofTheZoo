@@ -64,7 +64,7 @@ public class ThirdPersonShooterController : MonoBehaviour
             mouseWorldPosition = raycastHit.point;
             hitTransform = raycastHit.transform;
         }
-        if ((starterAssetsInputs.aim || forcedAiming) && !Pause.IsPaused)
+        if ((starterAssetsInputs.aim || forcedAiming) && !Pause.IsPaused && !hitStunned)
         {
             aimVirtualCamera.gameObject.SetActive(true);
             thirdPersonController.SetSensitivity(aimSensitivity);
@@ -90,7 +90,7 @@ public class ThirdPersonShooterController : MonoBehaviour
             ToggleAimingRig(false);
         }
 
-        if (starterAssetsInputs.shoot && !Pause.IsPaused)
+        if (starterAssetsInputs.shoot && !Pause.IsPaused && !hitStunned)
         {
             forcedAiming = true;
             if (hitTransform != null && Time.time >= lastShotTime + weaponCoolDownTime)
@@ -150,10 +150,12 @@ public class ThirdPersonShooterController : MonoBehaviour
         fullBodyAimingRig.weight = rigOption ? 1 : 0;
     }
 
-    public void TakingDamageFromEnemies(int damageTaken)
+    public void TakingDamageFromEnemies(int damageTaken, Vector3 hitPositionSource)
     {
         currentHitPoints -= damageTaken;
         TriggerBackwardHitAnimation();
+        this.transform.LookAt(hitPositionSource);
+        //this.transform.rotation = Quaternion.LookRotation(hitPositionSource, Vector3.up);
     }
 
     private void TriggerBackwardHitAnimation()

@@ -15,13 +15,14 @@ public class EnemyMovementNavMesh : MonoBehaviour
     private float pathfinding_Distance = 0f;
     private bool attackingAnimation = false;
     private bool forcedInPlace = false;
-    
+    private float forcedInPlaceLastTime = 0f;
+    private float forcedInPlaceStunTime = 3f;//0.4f
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        ResetEnemyStatus();
+        //ResetEnemyStatus();
     }
 
     public void ResetEnemyStatus()
@@ -34,29 +35,37 @@ public class EnemyMovementNavMesh : MonoBehaviour
     void Update()
     {
         AnimationIdleOrRunBehaviour();
+        SettingNavMeshTarget();
         if (!forcedInPlace)
         {
-            MovingThroughPathfinding();
+            AttackingInPositionPatterns();
+        }
+        else
+        { 
+            CheckForcedInPlaceFlagTime();
+        }
+
+        if (attackingAnimation)
+        {
+            transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(pathfinding_Target.position - this.transform.position, Vector3.up).normalized, 0.01f);
         }
     }
 
-    private void MovingThroughPathfinding()
+    private void SettingNavMeshTarget()
+    {
+        agent.destination = pathfinding_Target.position;
+    }
+    
+    private void AttackingInPositionPatterns()
     {
         pathfinding_Distance = Vector3.Distance(agent.transform.position, pathfinding_Target.position);
+        //Entering attack range
         if (pathfinding_Distance <= attack_Distance)
         {
-            agent.isStopped = true;
+            //agent.isStopped = true;
+            TriggerForcedInPlace();
             attackingAnimation = true;
             animator.SetBool("Attack", true);
-        }
-        else
-        {
-            if (!attackingAnimation)
-            {
-                agent.isStopped = false;
-                //animator.SetBool("Attack", false);
-                agent.destination = pathfinding_Target.position;
-            }
         }
     }
 
@@ -74,8 +83,11 @@ public class EnemyMovementNavMesh : MonoBehaviour
 
     private void TurningOffAttackingAnimationStatus()
     {
-        attackingAnimation = false;
-        animator.SetBool("Attack", false);
+        if (attackingAnimation)
+        {
+            attackingAnimation = false;
+            animator.SetBool("Attack", false);
+        }
     }
 
     public void GettingHitByPlayer()
@@ -90,22 +102,50 @@ public class EnemyMovementNavMesh : MonoBehaviour
         CheckAttackHitBoxStatusAndTurnOff();
     }
 
+    private void CheckForcedInPlaceFlagTime()
+    {
+        if (forcedInPlace)
+        {
+            if (Time.time >= forcedInPlaceLastTime + forcedInPlaceStunTime)
+            {
+                TriggerNoLongerInPlace();
+            }
+        }
+        else
+        {
+            if (!attackingAnimation)
+            {
+                //agent.destination = pathfinding_Target.position;
+                //agent.isStopped = false;
+                if (!forcedInPlace)
+                { 
+                    //Debug.Log("TRIGGERING NO LONGER IN PLACE, attackingAnimation: " + attackingAnimation + ", forcedInPlace: " + forcedInPlace);
+                    TriggerNoLongerInPlace();
+                }
+                //animator.SetBool("Attack", false);
+            }
+        }
+    }
     private void TriggerForcedInPlace()
     {
-        forcedInPlace = true;
+        //Debug.Log("FORCED IN PLACE - - - -");
         agent.isStopped = true;
+        forcedInPlaceLastTime = Time.time;
+        forcedInPlace = true;
     }
 
     private void TriggerNoLongerInPlace()
     {
+        //Debug.Log("alowing movement");
         forcedInPlace = false;
         agent.isStopped = false;
     }
 
     private void GettingHitAnimationtTriggerOnCritHit()
     {
-        animator.SetBool("Attack", false);
+        TurningOffAttackingAnimationStatus();
         animator.SetTrigger("Hit");
+        //animator.Play("Capybara Get Hit");
     }
     
     private void EndingGettingHitAnimation()
