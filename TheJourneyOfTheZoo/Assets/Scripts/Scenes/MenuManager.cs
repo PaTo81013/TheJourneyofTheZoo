@@ -11,7 +11,7 @@ namespace Scenes
         {
             Loader.Load(Loader.Scene.Lobby);
         }
-
+        
         public void Settings()
         {
             mainMenuCanvas.SetActive(false);

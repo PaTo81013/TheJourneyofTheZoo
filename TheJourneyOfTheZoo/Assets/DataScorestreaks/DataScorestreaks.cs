@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace DataScorestreaks
 {
@@ -17,6 +18,7 @@ namespace DataScorestreaks
         
         public int puntosPorUso;
         public int cantidadRequerida;
+        public float cooldown;
         
     }
 }

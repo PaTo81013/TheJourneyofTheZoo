@@ -6,7 +6,7 @@ namespace Scenes
 {
     public class ScoreManager : MonoBehaviour
     {
-        private static ScoreManager Instance { get; set; }
+        public static ScoreManager Instance { get; set; }
         public TextMeshProUGUI scoreText; 
         public int totalScore;
         
@@ -48,10 +48,11 @@ namespace Scenes
             scoreText.text = $"Score {totalScore}";
         }
 
-        public void AddScore(int amount)
+        private void AddScore(int amount)
         {
             totalScore += amount;
             UpdateScore();
         }
+
     }
 }
