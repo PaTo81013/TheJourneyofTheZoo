@@ -4,6 +4,7 @@ using UnityEngine;
 public class AttackTriggerEnemy : MonoBehaviour
 {
     [SerializeField] private DataEnemies.DataEnemies enemy_Data;
+    [SerializeField] private GameObject mainEnemyGameObject;
     private float cooldownMelee = 2f;
     private float lastMeleeTime = 0f;
     private int danoMelee = 0;
@@ -21,7 +22,7 @@ public class AttackTriggerEnemy : MonoBehaviour
         {
             if (other.CompareTag("Player"))
             {
-                other.gameObject.GetComponent<ThirdPersonShooterController>().TakingDamageFromEnemies(danoMelee);
+                other.gameObject.GetComponent<ThirdPersonShooterController>().TakingDamageFromEnemies(danoMelee, mainEnemyGameObject.transform.position);
                 lastMeleeTime = Time.time;
             }
         }

@@ -27,6 +27,9 @@ public class ThirdPersonShooterController : MonoBehaviour
     private Animator animator;
     private Transform hitTransform;
     private GameObject reachedGameObjectWithRaycastHit = default;
+    private Rigidbody playerRB = default;
+    private CapsuleCollider capsuleCollider = default;
+    private CharacterController playerCharacterController = default;
     private bool forcedAiming = false;
     private float lastShotTime = 0f;
     private float lastHitBTime = 0f;
@@ -41,11 +44,16 @@ public class ThirdPersonShooterController : MonoBehaviour
     private int maxWeaponAmmo = 45;
     private int currentWeaponAmmo = 45;
     private float reloadTime = 1.5f;
+    private float knockbackTime = 0.65f;
+    private bool beingLaunchedByKnockback = false;
 
     private void Awake()
     {
         thirdPersonController = GetComponent<ThirdPersonController>();
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
+        playerRB = GetComponent<Rigidbody>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
+        playerCharacterController = GetComponent<CharacterController>();
         //Can be removed once the top down mode is implemented!
         aimCrosshair.SetActive(false);
         normalCrosshair.SetActive(true);
@@ -65,7 +73,7 @@ public class ThirdPersonShooterController : MonoBehaviour
             mouseWorldPosition = raycastHit.point;
             hitTransform = raycastHit.transform;
         }
-        if ((starterAssetsInputs.aim || forcedAiming) && !Pause.IsPaused)
+        if ((starterAssetsInputs.aim || forcedAiming) && !Pause.IsPaused && !hitStunned)
         {
             aimVirtualCamera.gameObject.SetActive(true);
             thirdPersonController.SetSensitivity(aimSensitivity);
@@ -91,7 +99,7 @@ public class ThirdPersonShooterController : MonoBehaviour
             ToggleAimingRig(false);
         }
 
-        if (starterAssetsInputs.shoot && !Pause.IsPaused)
+        if (starterAssetsInputs.shoot && !Pause.IsPaused && !hitStunned)
         {
             forcedAiming = true;
             if (hitTransform != null && Time.time >= lastShotTime + weaponCoolDownTime)
@@ -125,9 +133,16 @@ public class ThirdPersonShooterController : MonoBehaviour
 
         if (hitStunned && Time.time >= lastHitBTime + hitBTimeStunTime)
         {
-            animator.SetBool("GettingHitB", false);
+            //animator.SetBool("GettingHitB", false);
             hitStunned = false;
+            //this.transform.position = playerRB.transform.position;
+            ResetRigidbodyAfterKnockbackAndEnableCharacterController();
             thirdPersonController.SetMovementState(!hitStunned);
+        }
+
+        if (beingLaunchedByKnockback && hitStunned && Time.time >= lastHitBTime + knockbackTime)
+        {
+            KnockBackMovementStop();
         }
         
     }
@@ -151,17 +166,46 @@ public class ThirdPersonShooterController : MonoBehaviour
         fullBodyAimingRig.weight = rigOption ? 1 : 0;
     }
 
-    public void TakingDamageFromEnemies(int damageTaken)
+    public void TakingDamageFromEnemies(int damageTaken, Vector3 hitPositionSource)
     {
         currentHitPoints -= damageTaken;
         TriggerBackwardHitAnimation();
+        this.transform.LookAt(hitPositionSource);
+        //Preparing for knockback
+        hitPositionSource = new Vector3(hitPositionSource.x, 0f, hitPositionSource.z);
+        Vector3 playerPositionInXandZ = new Vector3(this.transform.position.x, 0f, this.transform.position.z);
+        Vector3 throwBackDirection = (playerPositionInXandZ - hitPositionSource).normalized;
+        TriggerKnockbackSequenceAndDisableCharacterController(throwBackDirection * 500f);
+        //this.transform.rotation = Quaternion.LookRotation(hitPositionSource, Vector3.up);
     }
 
     private void TriggerBackwardHitAnimation()
     {
         lastHitBTime = Time.time;
-        animator.SetBool("GettingHitB", true);
+        animator.SetTrigger("GettingHitB");
         hitStunned = true;
         thirdPersonController.SetMovementState(!hitStunned);
+    }
+
+    private void TriggerKnockbackSequenceAndDisableCharacterController(Vector3 force)
+    {
+        playerCharacterController.enabled = false;
+        playerRB.isKinematic = false;
+        capsuleCollider.enabled = true;
+        beingLaunchedByKnockback = true;
+        playerRB.AddForce(force);
+    }
+
+    private void ResetRigidbodyAfterKnockbackAndEnableCharacterController()
+    {
+        playerRB.isKinematic = true;
+        capsuleCollider.enabled = false;
+        playerCharacterController.enabled = true;
+    }
+
+    private void KnockBackMovementStop()
+    {
+        playerRB.linearVelocity = Vector3.zero;
+        beingLaunchedByKnockback = false;
     }
 }
