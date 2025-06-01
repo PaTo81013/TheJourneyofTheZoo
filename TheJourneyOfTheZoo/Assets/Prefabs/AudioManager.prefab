@@ -51,7 +51,7 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: d2bf6caf23dbb6d4fa2fcde6086af11e, type: 2}
   audioSets:
   - sceneName: MainMenu
-    music: {fileID: 8300000, guid: ce1f4fdae91c6b542b83efc2c52e321e, type: 3}
+    music: {fileID: 8300000, guid: fcb462135735a1f45963e82e14c37220, type: 3}
     sfxClips: []
   - sceneName: LoadingScene
     music: {fileID: 8300000, guid: ce1f4fdae91c6b542b83efc2c52e321e, type: 3}
@@ -71,7 +71,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 7bc25c18ed470114dbf7dabf3b67d059, type: 3}
     - {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
   - sceneName: Central
-    music: {fileID: 0}
+    music: {fileID: 8300000, guid: 72f9abbdc72f6aa49842d2bbe9b0c079, type: 3}
     sfxClips:
     - {fileID: 8300000, guid: 6b3e0e3e80762c444ac0e7cc0f46ddf7, type: 3}
     - {fileID: 8300000, guid: 2da5fbbed09a6c840aa4cdb83bc2e032, type: 3}
@@ -85,7 +85,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 7bc25c18ed470114dbf7dabf3b67d059, type: 3}
     - {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
   - sceneName: Final
-    music: {fileID: 0}
+    music: {fileID: 8300000, guid: 8dffc54fd6d68694fa365cf53ad772a6, type: 3}
     sfxClips:
     - {fileID: 8300000, guid: 6b3e0e3e80762c444ac0e7cc0f46ddf7, type: 3}
     - {fileID: 8300000, guid: 2da5fbbed09a6c840aa4cdb83bc2e032, type: 3}
