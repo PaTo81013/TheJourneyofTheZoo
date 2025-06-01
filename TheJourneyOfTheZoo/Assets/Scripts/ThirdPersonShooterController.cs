@@ -132,7 +132,7 @@ public class ThirdPersonShooterController : MonoBehaviour
 
         if (hitStunned && Time.time >= lastHitBTime + hitBTimeStunTime)
         {
-            animator.SetBool("GettingHitB", false);
+            //animator.SetBool("GettingHitB", false);
             hitStunned = false;
             //this.transform.position = playerRB.transform.position;
             ResetRigidbodyAfterKnockbackAndEnableCharacterController();
@@ -181,7 +181,7 @@ public class ThirdPersonShooterController : MonoBehaviour
     private void TriggerBackwardHitAnimation()
     {
         lastHitBTime = Time.time;
-        animator.SetBool("GettingHitB", true);
+        animator.SetTrigger("GettingHitB");
         hitStunned = true;
         thirdPersonController.SetMovementState(!hitStunned);
     }
@@ -206,6 +206,5 @@ public class ThirdPersonShooterController : MonoBehaviour
     {
         playerRB.linearVelocity = Vector3.zero;
         beingLaunchedByKnockback = false;
-        Debug.Log("Knockback stopped");
     }
 }
