@@ -61,6 +61,7 @@ namespace Scenes
         public void IncreaseScore(int amount)
         {
             totalScore += amount;
+            Debug.Log("increased score by: " + amount);
             scorestreak1Counter += amount;
             scorestreak2Counter += amount;
             scorestreak3Counter += amount;

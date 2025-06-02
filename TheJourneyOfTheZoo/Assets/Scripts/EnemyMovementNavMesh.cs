@@ -114,6 +114,10 @@ public class EnemyMovementNavMesh : MonoBehaviour
 
     public void GettingHitByPlayer()
     {
+        if (!enemyIsAlive)
+        {
+            return;
+        }
         ScoreManager.Instance.IncreaseScore(enemy_Data.puntos);
         DecreaseEnemyCurrentLife(10);
         CheckEnemyAliveStatus();
@@ -121,6 +125,10 @@ public class EnemyMovementNavMesh : MonoBehaviour
     
     public void GettingCriticalHitByPlayer()
     {
+        if (!enemyIsAlive)
+        {
+            return;
+        }
         ScoreManager.Instance.IncreaseScore(enemy_Data.puntos + enemy_Data.bonusCritico);
         TriggerForcedInPlace();
         GettingHitAnimationtTriggerOnCritHit();
