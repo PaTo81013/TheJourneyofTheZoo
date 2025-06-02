@@ -57,7 +57,7 @@ MonoBehaviour:
     music: {fileID: 8300000, guid: ce1f4fdae91c6b542b83efc2c52e321e, type: 3}
     sfxClips: []
   - sceneName: Lobby
-    music: {fileID: 8300000, guid: ce1f4fdae91c6b542b83efc2c52e321e, type: 3}
+    music: {fileID: 8300000, guid: 19d242add036d2b44a98f279ad7c765a, type: 3}
     sfxClips:
     - {fileID: 8300000, guid: 6b3e0e3e80762c444ac0e7cc0f46ddf7, type: 3}
     - {fileID: 8300000, guid: 2da5fbbed09a6c840aa4cdb83bc2e032, type: 3}
@@ -98,6 +98,9 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 077868219d8de7648be02feebed07c85, type: 3}
     - {fileID: 8300000, guid: 7bc25c18ed470114dbf7dabf3b67d059, type: 3}
     - {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
+  - sceneName: Credits
+    music: {fileID: 8300000, guid: 8dffc54fd6d68694fa365cf53ad772a6, type: 3}
+    sfxClips: []
   musicSlider: {fileID: 0}
   sfxSlider: {fileID: 0}
 --- !u!1 &5188560096596412604
