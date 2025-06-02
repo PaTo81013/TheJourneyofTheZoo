@@ -10,6 +10,7 @@ namespace Scenes
         private class LoadingMonoBehaviour: MonoBehaviour { }
         public enum Scene
         {
+            Credits,
             LoadingScene,
             Lobby,
             Central,

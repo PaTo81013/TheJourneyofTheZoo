@@ -23,6 +23,11 @@ namespace Scenes
             mainMenuCanvas.SetActive(true);
             settingsCanvas.SetActive(false);
         }
+
+        public void Credits()
+        {
+            Loader.Load(Loader.Scene.Credits);
+        }
         public void Quit()
         {
             Application.Quit();
