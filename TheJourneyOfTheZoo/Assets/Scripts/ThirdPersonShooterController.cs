@@ -42,9 +42,11 @@ public class ThirdPersonShooterController : MonoBehaviour
     private int maxWeaponAmmo = 45;
     private int currentWeaponAmmo = 45;
     private float reloadTime = 1.5f;
+    private float reloadLastTime = 0f;
     private float knockbackTime = 0.65f;
     private bool beingLaunchedByKnockback = false;
     private bool playerIsAlive = true;
+    private bool reloading = false;
 
     private void Awake()
     {
@@ -80,7 +82,7 @@ public class ThirdPersonShooterController : MonoBehaviour
                 hitTransform = raycastHit.transform;
             }
 
-            if ((starterAssetsInputs.aim || forcedAiming) && !Pause.IsPaused && !hitStunned)
+            if ((starterAssetsInputs.aim || forcedAiming || reloading) && !Pause.IsPaused && !hitStunned)
             {
                 aimVirtualCamera.gameObject.SetActive(true);
                 thirdPersonController.SetSensitivity(aimSensitivity);
@@ -113,23 +115,32 @@ public class ThirdPersonShooterController : MonoBehaviour
                 {
                     Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
                     reachedGameObjectWithRaycastHit = hitTransform.root.gameObject;
-                    if (hitTransform.gameObject.CompareTag("MissHit"))
+                    if (hitTransform.gameObject.CompareTag("MissHit") && currentWeaponAmmo != 0)
                     {
                         PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir,
                             mouseWorldPosition, false, false, reachedGameObjectWithRaycastHit);
                     }
-                    else if (hitTransform.gameObject.CompareTag("CriticalHit"))
+                    else if (hitTransform.gameObject.CompareTag("CriticalHit") && currentWeaponAmmo != 0)
                     {
                         PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir,
                             mouseWorldPosition, true, true, reachedGameObjectWithRaycastHit);
                     }
-                    else if (hitTransform.gameObject.CompareTag("NormalHit"))
+                    else if (hitTransform.gameObject.CompareTag("NormalHit") && currentWeaponAmmo != 0)
                     {
                         PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir,
                             mouseWorldPosition, false, true, reachedGameObjectWithRaycastHit);
                     }
 
                     lastShotTime = Time.time;
+                    if (currentWeaponAmmo == 0 && !reloading)
+                    {
+                        BeginReloadSequence();
+                    }
+                    else
+                    {
+                        currentWeaponAmmo--;
+                    }
+                    AmmoUIManager.Instance.UpdateNewAmmoValue(currentWeaponAmmo);
                 }
 
                 //if (hitTransform.gameObject.CompareTag("NormalHit"))
@@ -149,6 +160,18 @@ public class ThirdPersonShooterController : MonoBehaviour
                 //this.transform.position = playerRB.transform.position;
                 ResetRigidbodyAfterKnockbackAndEnableCharacterController();
                 thirdPersonController.SetMovementState(!hitStunned);
+            }
+
+            if (Time.time >= reloadLastTime + reloadTime && reloading)
+            {
+                Debug.Log("TIME ELAPSED now reloading");
+                ReloadWeapon();
+            }
+
+            if (Input.GetKeyDown(KeyCode.R) && !Pause.IsPaused && !hitStunned && !reloading)
+            {
+                Debug.Log("attempting reload sequence");
+                BeginReloadSequence();
             }
         }
         else
@@ -237,6 +260,7 @@ public class ThirdPersonShooterController : MonoBehaviour
         currentShieldPoints = 0;
         currentWeaponAmmo = 45;
         hitStunned = false;
+        reloading = false;
         thirdPersonController.SetMovementState(true);
         animator.SetBool("Death", false);
     }
@@ -270,6 +294,21 @@ public class ThirdPersonShooterController : MonoBehaviour
             thirdPersonController.SetMovementState(false);
             animator.SetBool("Death", true);
         }
+    }
+
+    private void BeginReloadSequence()
+    {
+        reloading = true;
+        animator.SetTrigger("Reload");
+        reloadLastTime = Time.time;
+        animator.SetLayerWeight(1,1);
+    }
+
+    private void ReloadWeapon()
+    {
+        currentWeaponAmmo = maxWeaponAmmo;
+        AmmoUIManager.Instance.UpdateNewAmmoValue(currentWeaponAmmo);
+        reloading = false;
     }
 
     private void UpdateHitpointsAndShieldPointsInUI()
