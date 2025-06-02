@@ -37,15 +37,14 @@ public class ThirdPersonShooterController : MonoBehaviour
     private bool hitStunned = false;
     //Player Modifiers
     private float weaponCoolDownTime = 0.3f;
-    private int maxHitPoints = 100;
     private int currentHitPoints = 100;
-    private int damagePerShot = 10;
-    private int critMultiplier = 2;
+    private int currentShieldPoints = 0;
     private int maxWeaponAmmo = 45;
     private int currentWeaponAmmo = 45;
     private float reloadTime = 1.5f;
     private float knockbackTime = 0.65f;
     private bool beingLaunchedByKnockback = false;
+    private bool playerIsAlive = true;
 
     private void Awake()
     {
@@ -61,90 +60,106 @@ public class ThirdPersonShooterController : MonoBehaviour
         hitTransform = null;
     }
 
+    private void Start()
+    {
+        SetFirstStatValues();
+    }
+
     private void Update()
     {
-        Vector3 mouseWorldPosition = Vector3.zero;
-        Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-        
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
+        if (playerIsAlive)
         {
-            debugTransform.position = raycastHit.point;
-            mouseWorldPosition = raycastHit.point;
-            hitTransform = raycastHit.transform;
-        }
-        if ((starterAssetsInputs.aim || forcedAiming) && !Pause.IsPaused && !hitStunned)
-        {
-            aimVirtualCamera.gameObject.SetActive(true);
-            thirdPersonController.SetSensitivity(aimSensitivity);
-            thirdPersonController.SetRotateOnMove(false);
-            AimCrosshairController(true);
-            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
-            ToggleAimingRig(true);
+            Vector3 mouseWorldPosition = Vector3.zero;
+            Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+            Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 
-            Vector3 worldAimTarget = mouseWorldPosition;
-            worldAimTarget.y = transform.position.y;
-            Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
-            
-            //Rotate character to direction
-            transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
-        }
-        else
-        {
-            aimVirtualCamera.gameObject.SetActive(false);
-            thirdPersonController.SetSensitivity(normalSensitivity);
-            thirdPersonController.SetRotateOnMove(true);
-            AimCrosshairController(false);
-            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
-            ToggleAimingRig(false);
-        }
-
-        if (starterAssetsInputs.shoot && !Pause.IsPaused && !hitStunned)
-        {
-            forcedAiming = true;
-            if (hitTransform != null && Time.time >= lastShotTime + weaponCoolDownTime)
+            if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
             {
-                Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
-                reachedGameObjectWithRaycastHit = hitTransform.root.gameObject;
-                if (hitTransform.gameObject.CompareTag("MissHit"))
-                {
-                    PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition, false, false, reachedGameObjectWithRaycastHit);
-                }
-                else if (hitTransform.gameObject.CompareTag("CriticalHit"))
-                {
-                    PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition, true, true, reachedGameObjectWithRaycastHit);
-                } 
-                else if (hitTransform.gameObject.CompareTag("NormalHit"))
-                {
-                    PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition, false, true, reachedGameObjectWithRaycastHit);
-                }
-                lastShotTime = Time.time;
+                debugTransform.position = raycastHit.point;
+                mouseWorldPosition = raycastHit.point;
+                hitTransform = raycastHit.transform;
             }
-            
-            //if (hitTransform.gameObject.CompareTag("NormalHit"))
-            //PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition);
-            //Instantiate(pfBulletProjectile, spawnBulletPosition.position, Quaternion.LookRotation(aimDir, Vector3.up));
-            //starterAssetsInputs.shoot = false;
+
+            if ((starterAssetsInputs.aim || forcedAiming) && !Pause.IsPaused && !hitStunned)
+            {
+                aimVirtualCamera.gameObject.SetActive(true);
+                thirdPersonController.SetSensitivity(aimSensitivity);
+                thirdPersonController.SetRotateOnMove(false);
+                AimCrosshairController(true);
+                animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
+                ToggleAimingRig(true);
+
+                Vector3 worldAimTarget = mouseWorldPosition;
+                worldAimTarget.y = transform.position.y;
+                Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
+
+                //Rotate character to direction
+                transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
+            }
+            else
+            {
+                aimVirtualCamera.gameObject.SetActive(false);
+                thirdPersonController.SetSensitivity(normalSensitivity);
+                thirdPersonController.SetRotateOnMove(true);
+                AimCrosshairController(false);
+                animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
+                ToggleAimingRig(false);
+            }
+
+            if (starterAssetsInputs.shoot && !Pause.IsPaused && !hitStunned)
+            {
+                forcedAiming = true;
+                if (hitTransform != null && Time.time >= lastShotTime + weaponCoolDownTime)
+                {
+                    Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
+                    reachedGameObjectWithRaycastHit = hitTransform.root.gameObject;
+                    if (hitTransform.gameObject.CompareTag("MissHit"))
+                    {
+                        PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir,
+                            mouseWorldPosition, false, false, reachedGameObjectWithRaycastHit);
+                    }
+                    else if (hitTransform.gameObject.CompareTag("CriticalHit"))
+                    {
+                        PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir,
+                            mouseWorldPosition, true, true, reachedGameObjectWithRaycastHit);
+                    }
+                    else if (hitTransform.gameObject.CompareTag("NormalHit"))
+                    {
+                        PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir,
+                            mouseWorldPosition, false, true, reachedGameObjectWithRaycastHit);
+                    }
+
+                    lastShotTime = Time.time;
+                }
+
+                //if (hitTransform.gameObject.CompareTag("NormalHit"))
+                //PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir, mouseWorldPosition);
+                //Instantiate(pfBulletProjectile, spawnBulletPosition.position, Quaternion.LookRotation(aimDir, Vector3.up));
+                //starterAssetsInputs.shoot = false;
+            }
+            else
+            {
+                forcedAiming = false;
+            }
+
+            if (hitStunned && Time.time >= lastHitBTime + hitBTimeStunTime)
+            {
+                //animator.SetBool("GettingHitB", false);
+                hitStunned = false;
+                //this.transform.position = playerRB.transform.position;
+                ResetRigidbodyAfterKnockbackAndEnableCharacterController();
+                thirdPersonController.SetMovementState(!hitStunned);
+            }
         }
         else
         {
-            forcedAiming = false;
-        }
-
-        if (hitStunned && Time.time >= lastHitBTime + hitBTimeStunTime)
-        {
-            //animator.SetBool("GettingHitB", false);
-            hitStunned = false;
-            //this.transform.position = playerRB.transform.position;
-            ResetRigidbodyAfterKnockbackAndEnableCharacterController();
-            thirdPersonController.SetMovementState(!hitStunned);
+            thirdPersonController.SetMovementState(false);
         }
 
         if (beingLaunchedByKnockback && hitStunned && Time.time >= lastHitBTime + knockbackTime)
         {
             KnockBackMovementStop();
         }
-        
     }
 
     private void AimCrosshairController(bool aimingNow)
@@ -168,7 +183,12 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     public void TakingDamageFromEnemies(int damageTaken, Vector3 hitPositionSource)
     {
-        currentHitPoints -= damageTaken;
+        if (!playerIsAlive)
+        {
+            return;
+        }
+        ManageDamageTakenIntoCurrentHitPointsAndShieldPoints(damageTaken);
+        ScoreManager.Instance.PlayerHasBeenHit();
         TriggerBackwardHitAnimation();
         this.transform.LookAt(hitPositionSource);
         //Preparing for knockback
@@ -207,5 +227,54 @@ public class ThirdPersonShooterController : MonoBehaviour
     {
         playerRB.linearVelocity = Vector3.zero;
         beingLaunchedByKnockback = false;
+    }
+
+    private void SetFirstStatValues()
+    {
+        playerIsAlive = true;
+        //currentHitPoints = 100;
+        currentHitPoints = 10;
+        currentShieldPoints = 0;
+        currentWeaponAmmo = 45;
+        hitStunned = false;
+        thirdPersonController.SetMovementState(true);
+        animator.SetBool("Death", false);
+    }
+
+    private void ManageDamageTakenIntoCurrentHitPointsAndShieldPoints(int damageTaken)
+    {
+        if (currentShieldPoints < 0)
+        {
+            currentShieldPoints = currentShieldPoints - damageTaken;
+            if (currentShieldPoints < 0)
+            {
+                int residualDamage = Mathf.Abs(currentShieldPoints);
+                currentHitPoints = currentHitPoints - residualDamage;
+            }
+        }
+        else
+        {
+            currentHitPoints = currentHitPoints - damageTaken;
+        }
+        UpdateHitpointsAndShieldPointsInUI();
+        CheckIfPlayerIsAlive();
+    }
+
+    private void CheckIfPlayerIsAlive()
+    {
+        if (currentHitPoints <= 0)
+        {
+            playerIsAlive = false; //Aun falta implementar el estado de muerte, es lo que SIGUE
+            currentHitPoints = 0;
+            hitStunned = true;
+            thirdPersonController.SetMovementState(false);
+            animator.SetBool("Death", true);
+        }
+    }
+
+    private void UpdateHitpointsAndShieldPointsInUI()
+    {
+        HitpointsUIManager.Instance.UpdateNewHPValue(currentHitPoints);
+        HitpointsUIManager.Instance.UpdateNewShieldValue(currentShieldPoints);
     }
 }

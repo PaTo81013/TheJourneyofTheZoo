@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Scenes;
@@ -33,7 +34,7 @@ public class Killstreak : MonoBehaviour
 
             if (Input.GetKeyDown(teclasParaRachas[i]))
             {
-                int puntosActuales = ScoreManager.Instance.totalScore;
+                int puntosActuales = ScoreManager.Instance.GetScore();
                 int umbral = listaDeRachas[i].cantidadRequerida;
 
                 if (puntosActuales >= umbral)

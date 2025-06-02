@@ -1,4 +1,5 @@
 using System;
+using Scenes;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -17,11 +18,17 @@ public class EnemyMovementNavMesh : MonoBehaviour
     private bool forcedInPlace = false;
     private float forcedInPlaceLastTime = 0f;
     private float forcedInPlaceStunTime = 3f;//0.4f
+    private int enemyCurrentLife = 0;
+    private bool enemyIsAlive = true;
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        FillEnemyData();
+        enemyIsAlive = true;
+        animator.SetBool("Death", false);
+        agent.isStopped = false;
         //ResetEnemyStatus();
     }
 
@@ -30,30 +37,45 @@ public class EnemyMovementNavMesh : MonoBehaviour
         attackingAnimation = false;
         forcedInPlace = false;
         pathfinding_Distance = 0f;
+        FillEnemyData();
+        enemyIsAlive = true;
+        animator.SetBool("Death", false);
+        agent.isStopped = false;
     }
 
     void Update()
     {
-        AnimationIdleOrRunBehaviour();
-        SettingNavMeshTarget();
-        if (!forcedInPlace)
+        if (enemyIsAlive)
         {
-            AttackingInPositionPatterns();
+            AnimationIdleOrRunBehaviour();
+            SettingNavMeshTarget();
+            if (!forcedInPlace)
+            {
+                AttackingInPositionPatterns();
+            }
+            else
+            { 
+                CheckForcedInPlaceFlagTime();
+            }
+
+            if (attackingAnimation)
+            {
+                transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(pathfinding_Target.position - this.transform.position, Vector3.up).normalized, 0.01f);
+            }
         }
         else
-        { 
-            CheckForcedInPlaceFlagTime();
-        }
-
-        if (attackingAnimation)
         {
-            transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(pathfinding_Target.position - this.transform.position, Vector3.up).normalized, 0.01f);
+            agent.isStopped = true;
+            animator.SetBool("Death", true);
         }
     }
 
     private void SettingNavMeshTarget()
     {
-        agent.destination = pathfinding_Target.position;
+        if (enemyIsAlive)
+        {
+            agent.destination = pathfinding_Target.position;
+        }
     }
     
     private void AttackingInPositionPatterns()
@@ -92,14 +114,35 @@ public class EnemyMovementNavMesh : MonoBehaviour
 
     public void GettingHitByPlayer()
     {
-        //TriggerForcedInPlace();
+        if (!enemyIsAlive)
+        {
+            return;
+        }
+        ScoreManager.Instance.IncreaseScore(enemy_Data.puntos);
+        DecreaseEnemyCurrentLife(10);
+        CheckEnemyAliveStatus();
     }
     
     public void GettingCriticalHitByPlayer()
     {
+        if (!enemyIsAlive)
+        {
+            return;
+        }
+        ScoreManager.Instance.IncreaseScore(enemy_Data.puntos + enemy_Data.bonusCritico);
         TriggerForcedInPlace();
         GettingHitAnimationtTriggerOnCritHit();
         CheckAttackHitBoxStatusAndTurnOff();
+        if (ScoreManager.Instance.GetBananaYagaStatus())
+        {
+            DecreaseEnemyCurrentLife(30);
+        }
+        else
+        {
+            DecreaseEnemyCurrentLife(20);
+        }
+
+        CheckEnemyAliveStatus();
     }
 
     private void CheckForcedInPlaceFlagTime()
@@ -169,6 +212,27 @@ public class EnemyMovementNavMesh : MonoBehaviour
         if (enemy_Attack_Hitbox.activeInHierarchy)
         {
             AttackHitboxOFF();
+        }
+    }
+
+    private void FillEnemyData()
+    {
+        enemyCurrentLife = enemy_Data.vida;
+        agent.speed = (float)enemy_Data.movimiento / 10f;
+    }
+
+    private void DecreaseEnemyCurrentLife(int damageAmount)
+    {
+        enemyCurrentLife -= damageAmount;
+    }
+
+    private void CheckEnemyAliveStatus()
+    {
+        if (enemyCurrentLife <= 0)
+        {
+            enemyIsAlive = false;
+            agent.isStopped = true;
+            animator.SetBool("Death", true);
         }
     }
 }
