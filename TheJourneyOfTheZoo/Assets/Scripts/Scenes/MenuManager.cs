@@ -32,6 +32,16 @@ namespace Scenes
             AudioManager.Instance.PlaySfx("Click");
             Loader.Load(Loader.Scene.Credits);
         }
+
+        public void Central()
+        {
+            Loader.Load(Loader.Scene.Central);
+        }
+
+        public void Final()
+        {
+            Loader.Load(Loader.Scene.Final);
+        }
         public void Quit()
         {
             Application.Quit();

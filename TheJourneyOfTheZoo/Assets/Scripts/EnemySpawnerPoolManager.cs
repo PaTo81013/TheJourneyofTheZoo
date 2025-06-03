@@ -52,6 +52,7 @@ public class EnemySpawnerPoolManager : MonoBehaviour
     private int pericoContador, tucanContador, polloContador, pitonContador, capybaraContador, panteraContador, tigreContador, changoContador, orangutanContador, gorilaContador = 0;
     private bool firstSetDefeated, secondSetDefeated, thirdSetDefeated = false;
     
+    public Canvas WinCanvas;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -522,18 +523,21 @@ public class EnemySpawnerPoolManager : MonoBehaviour
                 if (firstSetDefeated)
                 {
                     //CONDICION DE VICTORIA EN EL NIVEL 1
+                    WinCanvas.enabled = true;
                 }
                 break;
             case 2:
                 if (firstSetDefeated && secondSetDefeated)
                 {
                     //CONDICION DE VICTORIA EN EL NIVEL 2
+                    WinCanvas.enabled = true;
                 }
                 break;
             case 3:
                 if (firstSetDefeated && secondSetDefeated && thirdSetDefeated)
                 {
                     //CONDICION DE VICTORIA EN EL NIVEL 3
+                    WinCanvas.enabled = true;
                 }
                 break;
         }

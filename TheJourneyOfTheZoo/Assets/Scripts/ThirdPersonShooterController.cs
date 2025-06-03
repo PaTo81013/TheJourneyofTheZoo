@@ -48,6 +48,8 @@ public class ThirdPersonShooterController : MonoBehaviour
     private bool playerIsAlive = true;
     private bool reloading = false;
 
+    public Canvas LoseCanvas;
+
     private void Awake()
     {
         thirdPersonController = GetComponent<ThirdPersonController>();
@@ -293,6 +295,7 @@ public class ThirdPersonShooterController : MonoBehaviour
             hitStunned = true;
             thirdPersonController.SetMovementState(false);
             animator.SetBool("Death", true);
+            LoseCanvas.enabled=true;
             //CONDICION DE DERROTA
         }
     }
