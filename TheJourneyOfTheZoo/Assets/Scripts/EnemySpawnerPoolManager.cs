@@ -489,15 +489,15 @@ public class EnemySpawnerPoolManager : MonoBehaviour
 
     private void CheckWinCondition()
     {
-        if (defeatedEnemies >= (pericoContador + tucanContador + polloContador + pitonContador))
+        if (defeatedEnemies >= (maxNumberOfEnemies * 4))
         {
             firstSetDefeated = true;
         }
-        if (defeatedEnemies >= (capybaraContador + panteraContador + tigreContador))
+        if (defeatedEnemies >= (maxNumberOfEnemies * 7))
         {
             secondSetDefeated = true;
         }
-        if (defeatedEnemies >= (changoContador + orangutanContador + gorilaContador))
+        if (defeatedEnemies >= (maxNumberOfEnemies * 10))
         {
             thirdSetDefeated = true;
         }
