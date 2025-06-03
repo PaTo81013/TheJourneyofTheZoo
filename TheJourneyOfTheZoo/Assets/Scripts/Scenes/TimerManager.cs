@@ -6,7 +6,7 @@ namespace Scenes
     public class TimerManager : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI timerTxt = null;
-        [SerializeField] private float limitTime = 40f;
+        [SerializeField] private float limitTime = 10000f;
 
         private float _currentTime;
         private bool _timerRunning = true;

@@ -961,14 +961,6 @@ PrefabInstance:
       propertyPath: musicSlider
       value: 
       objectReference: {fileID: 2312567485536485482}
-    - target: {fileID: 2866160355483003618, guid: a3706bea628e3604ca54c191fc6ee3b5, type: 3}
-      propertyPath: audioSets.Array.data[0].sfxClips.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2866160355483003618, guid: a3706bea628e3604ca54c191fc6ee3b5, type: 3}
-      propertyPath: 'audioSets.Array.data[0].sfxClips.Array.data[0]'
-      value: 
-      objectReference: {fileID: 8300000, guid: ab10cb1388ef98340ab19b34ad9b01bd, type: 3}
     - target: {fileID: 7340309435051387472, guid: a3706bea628e3604ca54c191fc6ee3b5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.075141

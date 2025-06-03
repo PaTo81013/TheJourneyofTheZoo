@@ -238,6 +238,7 @@ public class EnemyMovementNavMesh : MonoBehaviour
             enemyIsAlive = false;
             agent.isStopped = true;
             animator.SetBool("Death", true);
+            EnemySpawnerPoolManager.Instance.UpdateEnemyDefeated();
         }
     }
 

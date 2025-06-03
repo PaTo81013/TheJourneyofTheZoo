@@ -48,11 +48,12 @@ public class EnemySpawnerPoolManager : MonoBehaviour
     private Vector3 boundaryPosition1, boundaryPosition2, boundaryPosition3, boundaryPosition4 = default;
     private float timeToSpawn = 5f;
     private float lastSpawnTime = 0f;
-    private int maxNumberOfEnemies = 25;
+    private int maxNumberOfEnemies = 2;
     private int pericoContador, tucanContador, polloContador, pitonContador, capybaraContador, panteraContador, tigreContador, changoContador, orangutanContador, gorilaContador = 0;
     private bool firstSetDefeated, secondSetDefeated, thirdSetDefeated = false;
+    private int defeatedEnemies = 0;
     
-    public Canvas WinCanvas;
+    public GameObject WinCanvas;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -79,6 +80,7 @@ public class EnemySpawnerPoolManager : MonoBehaviour
         changoContador = 0;
         orangutanContador = 0;
         gorilaContador = 0;
+        maxNumberOfEnemies = 2;
         firstSetDefeated = false;
         secondSetDefeated = false;
         thirdSetDefeated = false;
@@ -91,12 +93,13 @@ public class EnemySpawnerPoolManager : MonoBehaviour
 
     private void CreateEnemyAccordingToSpecifiedIndex(int enemyIndex)
     {
-
         if (!CheckIfItsPossibleToActivateEnemy(enemyIndex))
         {
             return;
         }
-        
+
+        IncreaseEnemyCounter(enemyIndex);
+
         Vector3 positionToBeSpawned = CalculatePositionToSpawnEnemy();
         
         switch (enemyIndex)
@@ -360,31 +363,31 @@ public class EnemySpawnerPoolManager : MonoBehaviour
             switch (currentLevel)
             {
                 case 1:
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(0);
+                    CreateEnemyAccordingToSpecifiedIndex(1);
+                    CreateEnemyAccordingToSpecifiedIndex(2);
+                    CreateEnemyAccordingToSpecifiedIndex(3);
                     break;
                 case 2:
                     CreateEnemyAccordingToSpecifiedIndex(4);
                     CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(5);
+                    CreateEnemyAccordingToSpecifiedIndex(5);
+                    CreateEnemyAccordingToSpecifiedIndex(6);
+                    CreateEnemyAccordingToSpecifiedIndex(6);
+                    CreateEnemyAccordingToSpecifiedIndex(6);
                     break;
                 case 3:
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(7);
+                    CreateEnemyAccordingToSpecifiedIndex(7);
+                    CreateEnemyAccordingToSpecifiedIndex(7);
+                    CreateEnemyAccordingToSpecifiedIndex(8);
+                    CreateEnemyAccordingToSpecifiedIndex(8);
+                    CreateEnemyAccordingToSpecifiedIndex(8);
+                    CreateEnemyAccordingToSpecifiedIndex(8);
+                    CreateEnemyAccordingToSpecifiedIndex(9);
+                    CreateEnemyAccordingToSpecifiedIndex(9);
+                    CreateEnemyAccordingToSpecifiedIndex(9);
                     break;
             }
             
@@ -392,164 +395,109 @@ public class EnemySpawnerPoolManager : MonoBehaviour
         }
     }
 
-    private bool CheckIfItsPossibleToActivateEnemy(int enemyIndex)
+    private bool CheckIfItsPossibleToActivateEnemy(int enemyIndexSent)
     {
         bool isEnemyReadyToBeSpawned = false;
-        switch (enemyIndex)
+        int counterSpecified = 0;
+        switch (enemyIndexSent)
         {
             case 0:
-                if (pericoContador >= maxNumberOfEnemies)
-                {
-                    isEnemyReadyToBeSpawned = false;
-                }
-                else
-                {
-                    isEnemyReadyToBeSpawned = true;
-                }
+                counterSpecified = pericoContador;
                 break;
             case 1:
-                if (tucanContador >= maxNumberOfEnemies)
-                {
-                    isEnemyReadyToBeSpawned = false;
-                }
-                else
-                {
-                    isEnemyReadyToBeSpawned = true;
-                }
+                counterSpecified = tucanContador;
                 break;
             case 2:
-                if (polloContador >= maxNumberOfEnemies)
-                {
-                    isEnemyReadyToBeSpawned = false;
-                }
-                else
-                {
-                    isEnemyReadyToBeSpawned = true;
-                }
+                counterSpecified = polloContador;
                 break;
             case 3:
-                if (pitonContador >= maxNumberOfEnemies)
-                {
-                    isEnemyReadyToBeSpawned = false;
-                }
-                else
-                {
-                    isEnemyReadyToBeSpawned = true;
-                }
+                counterSpecified = pitonContador;
                 break;
             case 4:
-                if (capybaraContador >= maxNumberOfEnemies)
-                {
-                    isEnemyReadyToBeSpawned = false;
-                }
-                else
-                {
-                    isEnemyReadyToBeSpawned = true;
-                }
+                counterSpecified = capybaraContador;
                 break;
             case 5:
-                if (panteraContador >= maxNumberOfEnemies)
-                {
-                    isEnemyReadyToBeSpawned = false;
-                }
-                else
-                {
-                    isEnemyReadyToBeSpawned = true;
-                }
+                counterSpecified = panteraContador;
                 break;
             case 6:
-                if (tigreContador >= maxNumberOfEnemies)
-                {
-                    isEnemyReadyToBeSpawned = false;
-                }
-                else
-                {
-                    isEnemyReadyToBeSpawned = true;
-                }
+                counterSpecified = tigreContador;
                 break;
             case 7:
-                if (changoContador >= maxNumberOfEnemies)
-                {
-                    isEnemyReadyToBeSpawned = false;
-                }
-                else
-                {
-                    isEnemyReadyToBeSpawned = true;
-                }
+                counterSpecified = changoContador;
                 break;
             case 8:
-                if (orangutanContador >= maxNumberOfEnemies)
-                {
-                    isEnemyReadyToBeSpawned = false;
-                }
-                else
-                {
-                    isEnemyReadyToBeSpawned = true;
-                }
+                counterSpecified = orangutanContador;
                 break;
             case 9:
-                if (gorilaContador >= 1)
-                {
-                    isEnemyReadyToBeSpawned = false;
-                }
-                else
-                {
-                    isEnemyReadyToBeSpawned = true;
-                }
+                counterSpecified = gorilaContador;
                 break;
+        }
+        if (counterSpecified >= maxNumberOfEnemies)
+        {
+            isEnemyReadyToBeSpawned = false;
+        }
+        else
+        {
+            isEnemyReadyToBeSpawned = true;
         }
         return isEnemyReadyToBeSpawned;
     }
 
-    public void UpdateEnemyDefeated(string enemyName)
+    private void IncreaseEnemyCounter(int enemyIndexSent)
     {
-        switch (enemyName)
+        switch (enemyIndexSent)
         {
-            case "Parrot":
+            case 0:
                 pericoContador++;
                 break;
-            case "Toucan":
+            case 1:
                 tucanContador++;
                 break;
-            case "Pollo":
+            case 2:
                 polloContador++;
                 break;
-            case "Python":
+            case 3:
                 pitonContador++;
                 break;
-            case "Capybara":
+            case 4:
                 capybaraContador++;
                 break;
-            case "Jaguar":
+            case 5:
                 panteraContador++;
                 break;
-            case "Tiger":
+            case 6:
                 tigreContador++;
                 break;
-            case "Monkey":
+            case 7:
                 changoContador++;
                 break;
-            case "Oranguntan":
+            case 8:
                 orangutanContador++;
                 break;
-            case "Gorilla":
+            case 9:
                 gorilaContador++;
                 break;
         }
+    }
+
+    public void UpdateEnemyDefeated()
+    {
+        defeatedEnemies++;
+        Debug.Log("Defeated enemies: " + defeatedEnemies);
         CheckWinCondition();
     }
 
     private void CheckWinCondition()
     {
-        if (pericoContador >= maxNumberOfEnemies && tucanContador >= maxNumberOfEnemies && polloContador >= maxNumberOfEnemies && pitonContador >= maxNumberOfEnemies)
+        if (defeatedEnemies >= (pericoContador + tucanContador + polloContador + pitonContador))
         {
             firstSetDefeated = true;
         }
-        if (capybaraContador >= maxNumberOfEnemies && panteraContador >= maxNumberOfEnemies && tigreContador >= maxNumberOfEnemies)
+        if (defeatedEnemies >= (capybaraContador + panteraContador + tigreContador))
         {
             secondSetDefeated = true;
         }
-        if (changoContador >= maxNumberOfEnemies && orangutanContador >= maxNumberOfEnemies && gorilaContador >= maxNumberOfEnemies)
+        if (defeatedEnemies >= (changoContador + orangutanContador + gorilaContador))
         {
             thirdSetDefeated = true;
         }
@@ -560,21 +508,21 @@ public class EnemySpawnerPoolManager : MonoBehaviour
                 if (firstSetDefeated)
                 {
                     //CONDICION DE VICTORIA EN EL NIVEL 1
-                    WinCanvas.enabled = true;
+                    WinCanvas.SetActive(true);
                 }
                 break;
             case 2:
                 if (firstSetDefeated && secondSetDefeated)
                 {
                     //CONDICION DE VICTORIA EN EL NIVEL 2
-                    WinCanvas.enabled = true;
+                    WinCanvas.SetActive(true);
                 }
                 break;
             case 3:
                 if (firstSetDefeated && secondSetDefeated && thirdSetDefeated)
                 {
                     //CONDICION DE VICTORIA EN EL NIVEL 3
-                    WinCanvas.enabled = true;
+                    WinCanvas.SetActive(true);
                 }
                 break;
         }

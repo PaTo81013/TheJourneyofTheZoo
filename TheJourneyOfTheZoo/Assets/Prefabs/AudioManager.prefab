@@ -52,7 +52,8 @@ MonoBehaviour:
   audioSets:
   - sceneName: MainMenu
     music: {fileID: 8300000, guid: fcb462135735a1f45963e82e14c37220, type: 3}
-    sfxClips: []
+    sfxClips:
+    - {fileID: 8300000, guid: ab10cb1388ef98340ab19b34ad9b01bd, type: 3}
   - sceneName: LoadingScene
     music: {fileID: 8300000, guid: ce1f4fdae91c6b542b83efc2c52e321e, type: 3}
     sfxClips: []
@@ -70,6 +71,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 077868219d8de7648be02feebed07c85, type: 3}
     - {fileID: 8300000, guid: 7bc25c18ed470114dbf7dabf3b67d059, type: 3}
     - {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
+    - {fileID: 8300000, guid: e2adbb02764fdfd4c84cc45daa816bf8, type: 3}
   - sceneName: Central
     music: {fileID: 8300000, guid: 72f9abbdc72f6aa49842d2bbe9b0c079, type: 3}
     sfxClips:
@@ -84,6 +86,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 077868219d8de7648be02feebed07c85, type: 3}
     - {fileID: 8300000, guid: 7bc25c18ed470114dbf7dabf3b67d059, type: 3}
     - {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
+    - {fileID: 8300000, guid: e2adbb02764fdfd4c84cc45daa816bf8, type: 3}
   - sceneName: Final
     music: {fileID: 8300000, guid: 8dffc54fd6d68694fa365cf53ad772a6, type: 3}
     sfxClips:
@@ -98,6 +101,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 077868219d8de7648be02feebed07c85, type: 3}
     - {fileID: 8300000, guid: 7bc25c18ed470114dbf7dabf3b67d059, type: 3}
     - {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
+    - {fileID: 8300000, guid: e2adbb02764fdfd4c84cc45daa816bf8, type: 3}
   - sceneName: Credits
     music: {fileID: 8300000, guid: 8dffc54fd6d68694fa365cf53ad772a6, type: 3}
     sfxClips: []
@@ -276,10 +280,10 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 4180884515031920887, guid: d2bf6caf23dbb6d4fa2fcde6086af11e, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

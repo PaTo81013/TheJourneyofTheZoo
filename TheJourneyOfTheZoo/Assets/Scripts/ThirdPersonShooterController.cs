@@ -47,8 +47,10 @@ public class ThirdPersonShooterController : MonoBehaviour
     private bool beingLaunchedByKnockback = false;
     private bool playerIsAlive = true;
     private bool reloading = false;
+    private float deathTimeFlag = 4.2f;
+    private float timeOfDeath = 0f;
 
-    public Canvas LoseCanvas;
+    public GameObject LoseCanvas;
 
     private void Awake()
     {
@@ -121,6 +123,7 @@ public class ThirdPersonShooterController : MonoBehaviour
                     {
                         PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir,
                             mouseWorldPosition, false, false, reachedGameObjectWithRaycastHit);
+                        AudioManager.Instance.PlaySfx("Shoot");
                     }
                     else if (hitTransform.gameObject.CompareTag("CriticalHit") && currentWeaponAmmo != 0 && !reloading)
                     {
@@ -131,6 +134,7 @@ public class ThirdPersonShooterController : MonoBehaviour
                     {
                         PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir,
                             mouseWorldPosition, false, true, reachedGameObjectWithRaycastHit);
+                        AudioManager.Instance.PlaySfx("Shoot");
                     }
 
                     lastShotTime = Time.time;
@@ -185,6 +189,11 @@ public class ThirdPersonShooterController : MonoBehaviour
         if (beingLaunchedByKnockback && hitStunned && Time.time >= lastHitBTime + knockbackTime)
         {
             KnockBackMovementStop();
+        }
+
+        if (currentHitPoints == 0 && Time.time >= timeOfDeath + deathTimeFlag + knockbackTime)
+        {
+            TriggerLoseScreen();
         }
     }
 
@@ -263,6 +272,7 @@ public class ThirdPersonShooterController : MonoBehaviour
         currentWeaponAmmo = 45;
         hitStunned = false;
         reloading = false;
+        timeOfDeath = 0f;
         thirdPersonController.SetMovementState(true);
         animator.SetBool("Death", false);
     }
@@ -295,8 +305,7 @@ public class ThirdPersonShooterController : MonoBehaviour
             hitStunned = true;
             thirdPersonController.SetMovementState(false);
             animator.SetBool("Death", true);
-            LoseCanvas.enabled=true;
-            //CONDICION DE DERROTA
+            timeOfDeath = Time.time;
         }
     }
 
@@ -319,5 +328,11 @@ public class ThirdPersonShooterController : MonoBehaviour
     {
         HitpointsUIManager.Instance.UpdateNewHPValue(currentHitPoints);
         HitpointsUIManager.Instance.UpdateNewShieldValue(currentShieldPoints);
+    }
+
+    private void TriggerLoseScreen()
+    {
+        LoseCanvas.SetActive(true);
+        //CONDICION DE DERROTA
     }
 }
