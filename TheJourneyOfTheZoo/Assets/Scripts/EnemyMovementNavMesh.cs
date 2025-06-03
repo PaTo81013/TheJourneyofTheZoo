@@ -17,7 +17,7 @@ public class EnemyMovementNavMesh : MonoBehaviour
     private bool attackingAnimation = false;
     private bool forcedInPlace = false;
     private float forcedInPlaceLastTime = 0f;
-    private float forcedInPlaceStunTime = 3f;//0.4f
+    private float forcedInPlaceStunTime = 3f;
     private int enemyCurrentLife = 0;
     private bool enemyIsAlive = true;
 
@@ -25,6 +25,7 @@ public class EnemyMovementNavMesh : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        pathfinding_Target = GameObject.FindGameObjectWithTag("Player").transform;
         FillEnemyData();
         enemyIsAlive = true;
         animator.SetBool("Death", false);
@@ -40,7 +41,10 @@ public class EnemyMovementNavMesh : MonoBehaviour
         FillEnemyData();
         enemyIsAlive = true;
         animator.SetBool("Death", false);
-        agent.isStopped = false;
+        if (this.gameObject.activeInHierarchy)
+        {
+            agent.isStopped = false;
+        }
     }
 
     void Update()
@@ -72,7 +76,7 @@ public class EnemyMovementNavMesh : MonoBehaviour
 
     private void SettingNavMeshTarget()
     {
-        if (enemyIsAlive)
+        if (enemyIsAlive && pathfinding_Target != null)
         {
             agent.destination = pathfinding_Target.position;
         }
@@ -119,6 +123,7 @@ public class EnemyMovementNavMesh : MonoBehaviour
             return;
         }
         ScoreManager.Instance.IncreaseScore(enemy_Data.puntos);
+        
         DecreaseEnemyCurrentLife(10);
         CheckEnemyAliveStatus();
     }
@@ -234,5 +239,15 @@ public class EnemyMovementNavMesh : MonoBehaviour
             agent.isStopped = true;
             animator.SetBool("Death", true);
         }
+    }
+
+    public void TeleportAgentToSpot(Vector3 telportedPosition)
+    {
+        agent.Warp(telportedPosition);
+    }
+
+    public void DisableEnemyInHierarchy()
+    {
+        this.gameObject.SetActive(false);
     }
 }
