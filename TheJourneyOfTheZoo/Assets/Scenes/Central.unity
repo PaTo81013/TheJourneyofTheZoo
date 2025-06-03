@@ -148,10 +148,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d2f6d56c5f2afd4285461c87a86e6c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  perico: {fileID: 3958328490636660064, guid: 5bb2305c6684753468110ed9185f5cf7, type: 3}
-  tucan: {fileID: 5840486405443418227, guid: 20f0723483b1c86419ea3bfd4eca05bf, type: 3}
-  pollo: {fileID: 657876407490940951, guid: b0a278a95eb82bb478b6e762ab10c072, type: 3}
-  piton: {fileID: 7701488861278901067, guid: c3065ee1cfb6b6d4c9ee4835b1fcc53f, type: 3}
+  perico: {fileID: 7448862856706226792, guid: d1c69e09a5f7b33468e27586c027d82a, type: 3}
+  tucan: {fileID: 7448862856706226792, guid: d1c69e09a5f7b33468e27586c027d82a, type: 3}
+  pollo: {fileID: 7448862856706226792, guid: d1c69e09a5f7b33468e27586c027d82a, type: 3}
+  piton: {fileID: 7448862856706226792, guid: d1c69e09a5f7b33468e27586c027d82a, type: 3}
   capybara: {fileID: 7448862856706226792, guid: d1c69e09a5f7b33468e27586c027d82a, type: 3}
   pantera: {fileID: 8807980928480576371, guid: 6584bed31d4e91345a2b94a8b1ae235b, type: 3}
   tigre: {fileID: 8431558526130809578, guid: e21e6b1a8564f2942918723f2f7aa9dd, type: 3}

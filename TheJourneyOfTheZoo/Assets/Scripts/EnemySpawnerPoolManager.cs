@@ -360,31 +360,31 @@ public class EnemySpawnerPoolManager : MonoBehaviour
             switch (currentLevel)
             {
                 case 1:
-                    CreateEnemyAccordingToSpecifiedIndex(0);
-                    CreateEnemyAccordingToSpecifiedIndex(1);
-                    CreateEnemyAccordingToSpecifiedIndex(2);
-                    CreateEnemyAccordingToSpecifiedIndex(3);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
                     break;
                 case 2:
-                    CreateEnemyAccordingToSpecifiedIndex(0);
-                    CreateEnemyAccordingToSpecifiedIndex(1);
-                    CreateEnemyAccordingToSpecifiedIndex(2);
-                    CreateEnemyAccordingToSpecifiedIndex(3);
                     CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(5);
-                    CreateEnemyAccordingToSpecifiedIndex(6);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
                     break;
                 case 3:
-                    CreateEnemyAccordingToSpecifiedIndex(0);
-                    CreateEnemyAccordingToSpecifiedIndex(1);
-                    CreateEnemyAccordingToSpecifiedIndex(2);
-                    CreateEnemyAccordingToSpecifiedIndex(3);
                     CreateEnemyAccordingToSpecifiedIndex(4);
-                    CreateEnemyAccordingToSpecifiedIndex(5);
-                    CreateEnemyAccordingToSpecifiedIndex(6);
-                    CreateEnemyAccordingToSpecifiedIndex(7);
-                    CreateEnemyAccordingToSpecifiedIndex(8);
-                    CreateEnemyAccordingToSpecifiedIndex(9);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
                     break;
             }
             
