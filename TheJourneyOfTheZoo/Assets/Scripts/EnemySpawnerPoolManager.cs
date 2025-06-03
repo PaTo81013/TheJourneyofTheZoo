@@ -91,6 +91,12 @@ public class EnemySpawnerPoolManager : MonoBehaviour
 
     private void CreateEnemyAccordingToSpecifiedIndex(int enemyIndex)
     {
+
+        if (!CheckIfItsPossibleToActivateEnemy(enemyIndex))
+        {
+            return;
+        }
+        
         Vector3 positionToBeSpawned = CalculatePositionToSpawnEnemy();
         
         switch (enemyIndex)
@@ -226,7 +232,7 @@ public class EnemySpawnerPoolManager : MonoBehaviour
                 }
                 break;
         }
-        
+
         //Si no hay game objects disponibles, entonces instanciamos uno y lo agregamos al pool
         switch (enemyIndex)
         {
@@ -351,7 +357,37 @@ public class EnemySpawnerPoolManager : MonoBehaviour
     {
         if (Time.time >= lastSpawnTime + timeToSpawn)
         {
-            CreateEnemyAccordingToSpecifiedIndex(4);
+            switch (currentLevel)
+            {
+                case 1:
+                    CreateEnemyAccordingToSpecifiedIndex(0);
+                    CreateEnemyAccordingToSpecifiedIndex(1);
+                    CreateEnemyAccordingToSpecifiedIndex(2);
+                    CreateEnemyAccordingToSpecifiedIndex(3);
+                    break;
+                case 2:
+                    CreateEnemyAccordingToSpecifiedIndex(0);
+                    CreateEnemyAccordingToSpecifiedIndex(1);
+                    CreateEnemyAccordingToSpecifiedIndex(2);
+                    CreateEnemyAccordingToSpecifiedIndex(3);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(5);
+                    CreateEnemyAccordingToSpecifiedIndex(6);
+                    break;
+                case 3:
+                    CreateEnemyAccordingToSpecifiedIndex(0);
+                    CreateEnemyAccordingToSpecifiedIndex(1);
+                    CreateEnemyAccordingToSpecifiedIndex(2);
+                    CreateEnemyAccordingToSpecifiedIndex(3);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(5);
+                    CreateEnemyAccordingToSpecifiedIndex(6);
+                    CreateEnemyAccordingToSpecifiedIndex(7);
+                    CreateEnemyAccordingToSpecifiedIndex(8);
+                    CreateEnemyAccordingToSpecifiedIndex(9);
+                    break;
+            }
+            
             lastSpawnTime = Time.time;
         }
     }
@@ -500,6 +536,7 @@ public class EnemySpawnerPoolManager : MonoBehaviour
                 gorilaContador++;
                 break;
         }
+        CheckWinCondition();
     }
 
     private void CheckWinCondition()
