@@ -16,7 +16,7 @@ public class PlayerPoolManager : MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(Instance);
+            Destroy(gameObject);
         }
         else
         {
