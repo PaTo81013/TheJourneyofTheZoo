@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2070925441746177912
 Transform:
   m_ObjectHideFlags: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   OutputChannel: 1
   StandbyUpdate: 2
   m_StreamingVersion: 20241001
-  m_LegacyPriority: 0
+  m_LegacyPriority: 20
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
