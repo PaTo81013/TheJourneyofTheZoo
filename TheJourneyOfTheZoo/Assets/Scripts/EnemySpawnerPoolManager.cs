@@ -509,6 +509,8 @@ public class EnemySpawnerPoolManager : MonoBehaviour
                 {
                     //CONDICION DE VICTORIA EN EL NIVEL 1
                     WinCanvas.SetActive(true);
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
                 }
                 break;
             case 2:
@@ -516,6 +518,8 @@ public class EnemySpawnerPoolManager : MonoBehaviour
                 {
                     //CONDICION DE VICTORIA EN EL NIVEL 2
                     WinCanvas.SetActive(true);
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
                 }
                 break;
             case 3:
@@ -523,6 +527,8 @@ public class EnemySpawnerPoolManager : MonoBehaviour
                 {
                     //CONDICION DE VICTORIA EN EL NIVEL 3
                     WinCanvas.SetActive(true);
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
                 }
                 break;
         }

@@ -100,10 +100,18 @@ public class EnemyMovementNavMesh : MonoBehaviour
         if (agent.velocity.magnitude != 0f)
         {
             animator.SetBool("Running", true);
+            /*if (enemy_Data.nombre.Equals("Parrot"))
+            {
+                agent.baseOffset = Mathf.Lerp(1.5f, 0f, 1f);
+            }*/
         }
         else
         {
             animator.SetBool("Running", false);
+            /*if (enemy_Data.nombre.Equals("Parrot"))
+            {
+                agent.baseOffset = Mathf.Lerp(0f, 1.5f, 1f);
+            }*/
         }
     }
 
@@ -238,7 +246,6 @@ public class EnemyMovementNavMesh : MonoBehaviour
             enemyIsAlive = false;
             agent.isStopped = true;
             animator.SetBool("Death", true);
-            EnemySpawnerPoolManager.Instance.UpdateEnemyDefeated();
         }
     }
 
@@ -250,5 +257,6 @@ public class EnemyMovementNavMesh : MonoBehaviour
     public void DisableEnemyInHierarchy()
     {
         this.gameObject.SetActive(false);
+        EnemySpawnerPoolManager.Instance.UpdateEnemyDefeated();
     }
 }
