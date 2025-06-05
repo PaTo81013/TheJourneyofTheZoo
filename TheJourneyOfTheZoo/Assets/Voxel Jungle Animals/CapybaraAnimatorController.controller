@@ -436,9 +436,9 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2465876328336418032}
-  - {fileID: -1412739162108717083}
   - {fileID: -6709296526413194248}
   - {fileID: -7808323915562882663}
+  - {fileID: -1412739162108717083}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
