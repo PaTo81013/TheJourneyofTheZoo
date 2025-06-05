@@ -100,10 +100,18 @@ public class EnemyMovementNavMesh : MonoBehaviour
         if (agent.velocity.magnitude != 0f)
         {
             animator.SetBool("Running", true);
+            /*if (enemy_Data.nombre.Equals("Parrot"))
+            {
+                agent.baseOffset = Mathf.Lerp(1.5f, 0f, 1f);
+            }*/
         }
         else
         {
             animator.SetBool("Running", false);
+            /*if (enemy_Data.nombre.Equals("Parrot"))
+            {
+                agent.baseOffset = Mathf.Lerp(0f, 1.5f, 1f);
+            }*/
         }
     }
 

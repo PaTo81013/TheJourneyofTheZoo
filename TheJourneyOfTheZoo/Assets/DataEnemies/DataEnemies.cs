@@ -6,7 +6,7 @@ namespace DataEnemies
     public class DataEnemies : ScriptableObject
     {
         //[SerializeField] private GameObject enemyPrefab;
-        [SerializeField] private string nombre;
+        [SerializeField] public string nombre;
         
         [SerializeField] public int vida;
         [SerializeField] public int movimiento;
