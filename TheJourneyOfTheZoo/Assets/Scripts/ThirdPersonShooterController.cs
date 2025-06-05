@@ -129,6 +129,7 @@ public class ThirdPersonShooterController : MonoBehaviour
                     {
                         PlayerPoolManager.Instance.InstantiateBulletForShoot(spawnBulletPosition.position, aimDir,
                             mouseWorldPosition, true, true, reachedGameObjectWithRaycastHit);
+                        AudioManager.Instance.PlaySfx("Shoot");
                     }
                     else if (hitTransform.gameObject.CompareTag("NormalHit") && currentWeaponAmmo != 0 && !reloading)
                     {
@@ -332,7 +333,9 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     private void TriggerLoseScreen()
     {
-        LoseCanvas.SetActive(true);
         //CONDICION DE DERROTA
+        LoseCanvas.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

@@ -238,7 +238,6 @@ public class EnemyMovementNavMesh : MonoBehaviour
             enemyIsAlive = false;
             agent.isStopped = true;
             animator.SetBool("Death", true);
-            EnemySpawnerPoolManager.Instance.UpdateEnemyDefeated();
         }
     }
 
@@ -250,5 +249,6 @@ public class EnemyMovementNavMesh : MonoBehaviour
     public void DisableEnemyInHierarchy()
     {
         this.gameObject.SetActive(false);
+        EnemySpawnerPoolManager.Instance.UpdateEnemyDefeated();
     }
 }
