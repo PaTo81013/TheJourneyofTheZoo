@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8049968183724750862
 Transform:
   m_ObjectHideFlags: 0
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2591813056034326287}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.006, y: 1.011, z: 0.046}
+  m_LocalPosition: {x: 0.12, y: 1.21, z: 0.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -66,7 +66,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &5848825670547745348
 PrefabInstance:
@@ -684,7 +684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy_Data: {fileID: 11400000, guid: 0b61032a0ca81ff4d9c45c43f12489e1, type: 2}
   pathfinding_Target: {fileID: 0}
-  attack_Distance: 3
+  attack_Distance: 4
   enemy_Attack_Hitbox: {fileID: 2591813056034326287}
 --- !u!195 &6465863602434534276
 NavMeshAgent:

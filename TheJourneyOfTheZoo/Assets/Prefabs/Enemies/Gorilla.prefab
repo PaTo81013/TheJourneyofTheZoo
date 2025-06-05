@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6285573264252446689}
   m_Layer: 0
   m_Name: AttackHitbox
-  m_TagString: Untagged
+  m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,12 +26,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4973518186823205380}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.092, y: 0.721, z: -0.183}
+  m_LocalRotation: {x: 0.1403119, y: 0.018434986, z: 0.009394789, w: 0.98989123}
+  m_LocalPosition: {x: 0.02, y: 1.39, z: -1.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7211192900830634252}
+  m_Father: {fileID: 4040545903442953498}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &2833011067585924226
 SphereCollider:
@@ -48,11 +48,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6285573264252446689
 MonoBehaviour:
@@ -363,8 +363,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -6741651039559101564, guid: 767928f48df7f2b4c89be36d912c456c, type: 3}
-      insertIndex: -1
+    - targetCorrespondingSourceObject: {fileID: -112182403138881646, guid: 767928f48df7f2b4c89be36d912c456c, type: 3}
+      insertIndex: 0
       addedObject: {fileID: 2126350211110990633}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 767928f48df7f2b4c89be36d912c456c, type: 3}
@@ -471,7 +471,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
@@ -498,11 +498,16 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 8470349965353318178, guid: 767928f48df7f2b4c89be36d912c456c, type: 3}
+--- !u!4 &4040545903442953498 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -112182403138881646, guid: 767928f48df7f2b4c89be36d912c456c, type: 3}
+  m_PrefabInstance: {fileID: 5072062144334000776}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4056061830245755429 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -132412969498027859, guid: 767928f48df7f2b4c89be36d912c456c, type: 3}
@@ -552,7 +557,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
@@ -579,7 +584,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
@@ -630,7 +635,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy_Data: {fileID: 11400000, guid: eb569f420788db544bca963f844342b9, type: 2}
   pathfinding_Target: {fileID: 0}
-  attack_Distance: 3
+  attack_Distance: 4
   enemy_Attack_Hitbox: {fileID: 4973518186823205380}
 --- !u!195 &6314425012964019601
 NavMeshAgent:
@@ -725,16 +730,11 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4227664611427173325, guid: 767928f48df7f2b4c89be36d912c456c, type: 3}
---- !u!4 &7211192900830634252 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -6741651039559101564, guid: 767928f48df7f2b4c89be36d912c456c, type: 3}
-  m_PrefabInstance: {fileID: 5072062144334000776}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7464993040097656015 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2448672025618894407, guid: 767928f48df7f2b4c89be36d912c456c, type: 3}
@@ -865,7 +865,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30

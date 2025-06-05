@@ -208,6 +208,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Parrot
       objectReference: {fileID: 0}
+    - target: {fileID: 1421602509313335717, guid: f6582fc7dd1bccd44aeeeeb54f3852b3, type: 3}
+      propertyPath: m_TagString
+      value: CriticalHit
+      objectReference: {fileID: 0}
     - target: {fileID: 1494845738086088296, guid: f6582fc7dd1bccd44aeeeeb54f3852b3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -0.44166738

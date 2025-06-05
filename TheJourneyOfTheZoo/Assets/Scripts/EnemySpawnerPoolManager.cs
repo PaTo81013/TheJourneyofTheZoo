@@ -48,7 +48,7 @@ public class EnemySpawnerPoolManager : MonoBehaviour
     private Vector3 boundaryPosition1, boundaryPosition2, boundaryPosition3, boundaryPosition4 = default;
     private float timeToSpawn = 5f;
     private float lastSpawnTime = 0f;
-    private int maxNumberOfEnemies = 2;
+    private int maxNumberOfEnemies = 5;
     private int pericoContador, tucanContador, polloContador, pitonContador, capybaraContador, panteraContador, tigreContador, changoContador, orangutanContador, gorilaContador = 0;
     private bool firstSetDefeated, secondSetDefeated, thirdSetDefeated = false;
     private int defeatedEnemies = 0;
@@ -80,7 +80,6 @@ public class EnemySpawnerPoolManager : MonoBehaviour
         changoContador = 0;
         orangutanContador = 0;
         gorilaContador = 0;
-        maxNumberOfEnemies = 2;
         firstSetDefeated = false;
         secondSetDefeated = false;
         thirdSetDefeated = false;
@@ -369,25 +368,28 @@ public class EnemySpawnerPoolManager : MonoBehaviour
                     CreateEnemyAccordingToSpecifiedIndex(3);
                     break;
                 case 2:
-                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(0);
+                    CreateEnemyAccordingToSpecifiedIndex(1);
+                    CreateEnemyAccordingToSpecifiedIndex(2);
+                    CreateEnemyAccordingToSpecifiedIndex(3);
                     CreateEnemyAccordingToSpecifiedIndex(4);
                     CreateEnemyAccordingToSpecifiedIndex(5);
-                    CreateEnemyAccordingToSpecifiedIndex(5);
-                    CreateEnemyAccordingToSpecifiedIndex(6);
-                    CreateEnemyAccordingToSpecifiedIndex(6);
                     CreateEnemyAccordingToSpecifiedIndex(6);
                     break;
                 case 3:
+                    CreateEnemyAccordingToSpecifiedIndex(0);
+                    CreateEnemyAccordingToSpecifiedIndex(1);
+                    CreateEnemyAccordingToSpecifiedIndex(2);
+                    CreateEnemyAccordingToSpecifiedIndex(3);
+                    CreateEnemyAccordingToSpecifiedIndex(4);
+                    CreateEnemyAccordingToSpecifiedIndex(5);
+                    CreateEnemyAccordingToSpecifiedIndex(6);
                     CreateEnemyAccordingToSpecifiedIndex(7);
-                    CreateEnemyAccordingToSpecifiedIndex(7);
-                    CreateEnemyAccordingToSpecifiedIndex(7);
                     CreateEnemyAccordingToSpecifiedIndex(8);
-                    CreateEnemyAccordingToSpecifiedIndex(8);
-                    CreateEnemyAccordingToSpecifiedIndex(8);
-                    CreateEnemyAccordingToSpecifiedIndex(8);
-                    CreateEnemyAccordingToSpecifiedIndex(9);
-                    CreateEnemyAccordingToSpecifiedIndex(9);
-                    CreateEnemyAccordingToSpecifiedIndex(9);
+                    if (gorilaContador == 0)
+                    {
+                        CreateEnemyAccordingToSpecifiedIndex(9);
+                    }
                     break;
             }
             
@@ -497,7 +499,7 @@ public class EnemySpawnerPoolManager : MonoBehaviour
         {
             secondSetDefeated = true;
         }
-        if (defeatedEnemies >= (maxNumberOfEnemies * 10))
+        if (defeatedEnemies >= ((maxNumberOfEnemies * 9) + 1))
         {
             thirdSetDefeated = true;
         }
