@@ -108,6 +108,8 @@ namespace StarterAssets
         private const float _threshold = 0.01f;
 
         private bool _hasAnimator;
+
+        private Quaternion _lookingDirection;
        
         private bool IsCurrentDeviceMouse
         {
@@ -262,9 +264,11 @@ namespace StarterAssets
                     RotationSmoothTime);
 
                 // rotate to face input direction relative to camera position
+                _lookingDirection = Quaternion.Euler(0.0f, rotation, 0.0f);
+                
                 if (_rotateOnMove)
                 {
-                    transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+                    transform.rotation = _lookingDirection;
                 }
             }
 
@@ -404,6 +408,11 @@ namespace StarterAssets
             {
                 AudioManager.Instance.PlaySfx("Player_Land");
             }
+        }
+
+        public Quaternion getLookingDirection()
+        {
+            return _lookingDirection;
         }
     }
 }

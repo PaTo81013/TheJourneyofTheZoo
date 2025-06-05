@@ -6,6 +6,7 @@ public class AmmoUIManager : MonoBehaviour
 {
     public static AmmoUIManager Instance { get; set; }
     [SerializeField] private TextMeshProUGUI ammoText = null;
+    [SerializeField] private GameObject dashIcon = null;
     
     void Awake()
     {
@@ -32,6 +33,11 @@ public class AmmoUIManager : MonoBehaviour
     public void UpdateBananaYagaAmmoValue()
     {
         ammoText.text = "INFINITE";
+    }
+
+    public void ToggleDashIcon(bool toggleOption)
+    {
+        dashIcon.SetActive(toggleOption);
     }
     
 }

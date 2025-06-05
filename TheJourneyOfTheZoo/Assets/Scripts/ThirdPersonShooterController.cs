@@ -49,6 +49,12 @@ public class ThirdPersonShooterController : MonoBehaviour
     private bool reloading = false;
     private float deathTimeFlag = 4.2f;
     private float timeOfDeath = 0f;
+    private bool canDash = true;
+    private bool isDashing = false;
+    private float dashTime = 0.5f;
+    private float dashLastTime = 0f;
+    private float dashCooldownLastTime = 0f;
+    private float dashCooldown = 5f;
 
     public GameObject LoseCanvas;
 
@@ -181,6 +187,21 @@ public class ThirdPersonShooterController : MonoBehaviour
             {
                 BeginReloadSequence();
             }
+
+            if (Input.GetKeyDown(KeyCode.Mouse2) && !Pause.IsPaused && !reloading && canDash && !isDashing)
+            {
+                if (hitStunned)
+                {
+                    KnockBackMovementStop();
+                }
+                TriggerFrontDashAnimation();
+            }
+
+            if (!canDash && Time.time >= dashCooldownLastTime + dashCooldown + dashTime)
+            {
+                canDash = true;
+                AmmoUIManager.Instance.ToggleDashIcon(true);
+            }
         }
         else
         {
@@ -195,6 +216,15 @@ public class ThirdPersonShooterController : MonoBehaviour
         if (currentHitPoints == 0 && Time.time >= timeOfDeath + deathTimeFlag + knockbackTime)
         {
             TriggerLoseScreen();
+        }
+
+        if (Time.time >= dashLastTime + dashTime && !canDash && isDashing)
+        {
+            KnockBackMovementStop();
+            ResetRigidbodyAfterKnockbackAndEnableCharacterController();
+            thirdPersonController.SetMovementState(true);
+            isDashing = false;
+            //canDash = true;
         }
     }
 
@@ -219,7 +249,7 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     public void TakingDamageFromEnemies(int damageTaken, Vector3 hitPositionSource)
     {
-        if (!playerIsAlive)
+        if (!playerIsAlive || isDashing)
         {
             return;
         }
@@ -241,6 +271,20 @@ public class ThirdPersonShooterController : MonoBehaviour
         animator.SetTrigger("GettingHitB");
         hitStunned = true;
         thirdPersonController.SetMovementState(!hitStunned);
+    }
+
+    private void TriggerFrontDashAnimation()
+    {
+        dashLastTime = Time.time;
+        animator.SetTrigger("Dash");
+        canDash = false;
+        dashCooldownLastTime = Time.time;
+        thirdPersonController.SetMovementState(false);
+        isDashing = true;
+        AmmoUIManager.Instance.ToggleDashIcon(false);
+        AudioManager.Instance.PlaySfx("Woosh");
+        TriggerKnockbackSequenceAndDisableCharacterController((thirdPersonController.getLookingDirection() * Vector3.forward) * 700f);
+        //TriggerKnockbackSequenceAndDisableCharacterController(this.gameObject.transform.forward * 700f);
     }
 
     private void TriggerKnockbackSequenceAndDisableCharacterController(Vector3 force)
@@ -273,6 +317,8 @@ public class ThirdPersonShooterController : MonoBehaviour
         currentWeaponAmmo = 45;
         hitStunned = false;
         reloading = false;
+        canDash = true;
+        isDashing = false;
         timeOfDeath = 0f;
         thirdPersonController.SetMovementState(true);
         animator.SetBool("Death", false);
@@ -316,10 +362,12 @@ public class ThirdPersonShooterController : MonoBehaviour
         animator.SetTrigger("Reload");
         reloadLastTime = Time.time;
         animator.SetLayerWeight(1,1);
+        AudioManager.Instance.PlaySfx("ReloadM4");
     }
 
     private void ReloadWeapon()
     {
+        AudioManager.Instance.PlaySfx("Reload1911");
         currentWeaponAmmo = maxWeaponAmmo;
         AmmoUIManager.Instance.UpdateNewAmmoValue(currentWeaponAmmo);
         reloading = false;
