@@ -15,8 +15,7 @@ namespace Scenes
             Lobby,
             Central,
             Final,
-            MainMenu,
-            Leaderboard
+            MainMenu
         }
 
         private static Action _onLoaderCallback;

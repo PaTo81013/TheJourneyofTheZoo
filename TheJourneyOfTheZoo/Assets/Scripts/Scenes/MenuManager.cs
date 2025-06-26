@@ -19,11 +19,7 @@ namespace Scenes
             mainMenuCanvas.SetActive(false);
             settingsCanvas.SetActive(true);
         }
-
-        public void Leaderboard()
-        {
-            Loader.Load(Loader.Scene.Leaderboard);
-        }
+        
         public void BackToMainMenu()
         {
             AudioManager.Instance.PlaySfx("Click");
